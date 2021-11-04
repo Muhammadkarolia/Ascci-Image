@@ -20,10 +20,6 @@ OwnAsc={
     "o": 18,
     "p": 19,
 
-    "[": 20,
-    "]": 21,
-    "a": 22,
-    "s": 19,
     "d": 20,
     "f": 21,
     "g": 22,
@@ -69,10 +65,39 @@ OwnAsc={
     ">": 59,
 
     "?": 60,
+    "[": 61,
+    "]": 62,
+    "a": 63,
+    "s": 64,
+    "Q": 65,
+    "W": 66,
+    "E": 67,
+    "R": 68,
+    "T": 69,
+    "Y": 70,
+    "U": 71,
+    "I": 72,
+    "O": 73,
+    "P": 74,
+    "A": 75,
+    "S": 76,
+    "D": 77,
+    "F": 78,
+    "G": 79,
+    "H": 80,
+    "J": 81,
+    "K": 82,
+    "L": 83,
+    "Z": 84,
+    "X": 85,
+    "C": 86,
+    "V": 87,
+    "B": 88,
+    "N": 89,
+    "M": 90,
 }
 
-def Decode():
-    global OwnAsc
+def Decode(OwnAsc):
     file=open("messages/msg.txt", "w")
     print("do you have your own image name are do you want to open the the defealt decoding image?\n",Fore.RED,"1. I have my own\n",Fore.CYAN,"2.I am using the \"YourEncodedImage\" file ",Style.RESET_ALL)
     sys.stdout.write("Wrtie your anwser hear -->")
@@ -85,7 +110,7 @@ def Decode():
     LinesInFile=""
     for line in open("key.txt").readlines(): 
         LinesInFile=LinesInFile+line
-        print("lines in ", LinesInFile)
+        #print("lines in ", LinesInFile)
 
     # goes through the string charter by charter and adds it to the arry
     for i in range(0,len(LinesInFile)):
@@ -230,8 +255,7 @@ def Decode():
 
 
 
-def Encode():
-    global OwnAsc
+def Encode(OwnAsc):
     # Image # 
     img = Image.open("images/DontDelThisFile.png") # Opnning up the image #
     width, hight = img.size[0], img.size[1]
@@ -257,7 +281,6 @@ def Encode():
     
     file=open("key.txt", "r")
     arr=[] 
-    fileAPP=open("key.txt","a") 
 
     LinesInFile=""
     for line in open("key.txt").readlines(): 
@@ -303,6 +326,7 @@ def Encode():
         l=F
     elif(F==0 and M>0):
         l=1
+    
 
     i=0
     for y in range(hight):
@@ -319,7 +343,8 @@ def Encode():
             
                     elif(y==hight and x==width):
                         print("MSG can not be fittied in this img")
-                        quit() 
+
+                        #quit() 
                     
                     try:
 
@@ -332,6 +357,7 @@ def Encode():
                                     print("xx = ", xx)
                                 else:
                                     xx=int(arr[i])
+
                         img1.putpixel((xx,y), (r,g,b,0) )
                         #print(img.getpixel((int(arr[i]),y)))
                         #print("arr spit ", arr[i])
@@ -339,30 +365,9 @@ def Encode():
                     except Exception as err: 
 
                         if(str(err)[0:23]=="list index out of range"):
-                            #print("wow")
-                            if(1==1):
-                                pass
-
-                            for m in range(len(arr)):
-
-                                # These need fixing
-                                """if(arr[m]==rand):
-                                    if((arr[m]+1)>=99):
-                                        rand=randint(arr[m]-10,100)
-                                    elif((arr[m]+1)<99):
-                                        rand=randint(arr[m]+1,100)
-                                    elif(arr[m]!=rand):
-                                        pass
-
-                                for n in range(len(arr)):
-                                    if(arr[m]==arr[n]):
-                                        arr[n]=randint(m+1,9)""" # old code
-                                #new indea on line 295
-                                
-
-
-                            #fileAPP.write( str(rand) )
-                        elif(str(err)[0:23]!="list index out of range"):
+                            pass
+                            #add items to key
+                        else:
                             #email err msg
                             pass
 
@@ -375,25 +380,106 @@ def Encode():
     #save the img
     img1.save("images/YourEncodedImage.png")
 
-def gen():
-    if(os.path.isfile("key.txt")==False):
-        file=open("key.txt", "w")
-        
-        file.write()
-        file.close()
+abc="asdfghjklzxcvbnmqwertyuiop"
+abcap="QWERTYUIOPASDFGHJKLZXCVBNM"
+numbers="1234567890"
+sym="!£$%^&*()_+{}:@~?><,./;'#[]-="
+
+
+def check(var, randGEN, lock):
+    if(var[randGEN] in lock):
+        return True
+    else:
+        return False
+    
+    
 
 while True:
     inp=input("Type: ")
     Clear()
     if(inp=="1"):
-        Decode()
+        Decode(OwnAsc)
     elif(inp=="2"):
-        Encode()
-    elif(inp=="3"):
-        gen()
+        Encode(OwnAsc)
+    elif(inp=="3"): 
+
+        
+        passes=0
+        lock=set()
+        # Generator #
+        for i in range(60):
+            passA=0
+            passAcap=0
+            passN=0
+            passS=0
+            lock=set()
+            # Generator #
+            for i in range(60):
+                rand=randint(0,16)
+                #alfbet
+                if(rand>5 and rand<10 and passA!=len(abc)-1): # 6,7,8,9
+                    randGEN=randint(0,len(abc)-1)
+
+                    while True:
+                        if(check(abc, randGEN, lock)==True): # if the check retruens vlaue True
+                            randGEN=randint(0,len(abc)-1)
+                        else:
+                            lock.add( abc[randGEN] ) 
+                            break
+                        if(passA==len(abc)-1):
+                            break
+                    passA=passA+1
+
+                #numbers
+                elif(rand<5 and rand>0 and passN!=len(numbers)-1 ): # 4,3,2,1
+                    randGEN=randint(0,len(numbers)-1)
+                    
+                    while True:
+                        if(check(numbers, randGEN, lock)==True ): # if the check retruens vlaue True
+                            randGEN=randint(0,len(numbers)-1)
+                        else:
+                            lock.add( numbers[randGEN] ) 
+                            break    
+                        if(passA==len(numbers)-1):
+                            break
+                    passN=passN+1
+
+                #symbols
+                elif( rand==5 or rand==10 or rand==0 or rand==11 and passN!=len(sym)-1): # 0, 5, 10, 11
+                    randGEN=randint(0,len(sym)-1)
+
+                    while True:
+                        if(check(sym, randGEN, lock)==True): # if the check retruens vlaue True
+                            randGEN=randint(0,len(sym)-1)
+                        else:
+                            lock.add( sym[randGEN] ) 
+                            break
+                        if(passS==len(abc)-1):
+                            break
+                    passS=passS+1
+
+                elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
+                    randGEN=randint(0, len(abcap)-1)
+
+                    while True:
+                        if(check(abcap, randGEN, lock)==True):
+                            randGEN=randint(0,len(abcap)-1)
+                        else:
+                            lock.add( abcap[randGEN] )
+                            break
+                        if(passAcap==len(abc)-1):
+                            break
+                    passAcap=passAcap+1
+                
+                ListLock=list(lock)
+                file=open("key.txt", "w")
+                for i in range(len(ListLock)-1):
+                    file.write(ListLock[i])
+                file.close()
+
     else:
-        pass
-    img=Image.open("images/YourEncodedImage.png")
-    R=img.convert("RGBA")
-    for i in range(100):
-        print(img.getpixel((i,0)))
+        img=Image.open("images/YourEncodedImage.png")
+        R=img.convert("RGBA")
+        for i in range(100):
+            print(img.getpixel((i,0)))
+        quit()
