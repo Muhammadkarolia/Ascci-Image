@@ -368,6 +368,20 @@ def check(var, randGEN, lock):
     else:
         return False
 
+def genrator(var ,passes):
+    randGEN=randint(0, len(var)-1)
+
+    while True:
+        if(check(var, randGEN, lock)==True):
+            randGEN=randint(0,len(var)-1)
+        else:
+            lock.add( var[randGEN] )
+            break
+        if(passes==len(var)-1):
+            break
+        passes=passes+1
+
+
 while True:
     inp=input("Type: ")
     Clear()
@@ -386,65 +400,26 @@ while True:
             rand=randint(0,16)
             #alfbet
             if(rand>5 and rand<10 and passA!=len(abc)-1): # 6,7,8,9
-                randGEN=randint(0,len(abc)-1)
-
-                while True:
-                    if(check(abc, randGEN, lock)==True): # if the check retruens vlaue True
-                        randGEN=randint(0,len(abc)-1)
-                    else:
-                        lock.add( abc[randGEN] ) 
-                        break
-                    if(passA==len(abc)-1):
-                        break
-                passA=passA+1
+                genrator(abc,passA)
 
             #numbers
             elif(rand<5 and rand>0 and passN!=len(numbers)-1 ): # 4,3,2,1
-                randGEN=randint(0,len(numbers)-1)
-                
-                while True:
-                    if(check(numbers, randGEN, lock)==True ): # if the check retruens vlaue True
-                        randGEN=randint(0,len(numbers)-1)
-                    else:
-                        lock.add( numbers[randGEN] ) 
-                        break    
-                    if(passA==len(numbers)-1):
-                        break
-                passN=passN+1
+                genrator(numbers,passN)
 
             #symbols
-            elif( rand==5 or rand==10 or rand==0 or rand==11 and passN!=len(sym)-1): # 0, 5, 10, 11
-                randGEN=randint(0,len(sym)-1)
+            elif( rand==5 or rand==10 or rand==0 or rand==11 and passS!=len(sym)-1): # 0, 5, 10, 11
+                genrator(sym,passS)
 
-                while True:
-                    if(check(sym, randGEN, lock)==True): # if the check retruens vlaue True
-                        randGEN=randint(0,len(sym)-1)
-                    else:
-                        lock.add( sym[randGEN] ) 
-                        break
-                    if(passS==len(abc)-1):
-                        break
-                passS=passS+1
-
+            #caps
             elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
-                randGEN=randint(0, len(abcap)-1)
-
-                while True:
-                    if(check(abcap, randGEN, lock)==True):
-                        randGEN=randint(0,len(abcap)-1)
-                    else:
-                        lock.add( abcap[randGEN] )
-                        break
-                    if(passAcap==len(abc)-1):
-                        break
-                passAcap=passAcap+1
+                genrator(abcap, passAcap)
              
             ListLock=list(lock)
             file=open("key.txt", "w")
             for i in range(len(ListLock)-1):
                 file.write(ListLock[i])
             file.close()
-
+            
     else:
         img=Image.open("images/YourEncodedImage.png")
         R=img.convert("RGBA")
