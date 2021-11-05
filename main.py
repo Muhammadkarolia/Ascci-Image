@@ -74,6 +74,7 @@ OwnAsc={
     "E": 67,
     "R": 68,
     "T": 69,
+
     "Y": 70,
     "U": 71,
     "I": 72,
@@ -84,6 +85,7 @@ OwnAsc={
     "D": 77,
     "F": 78,
     "G": 79,
+
     "H": 80,
     "J": 81,
     "K": 82,
@@ -94,6 +96,7 @@ OwnAsc={
     "V": 87,
     "B": 88,
     "N": 89,
+
     "M": 90,
 }
 
@@ -125,18 +128,10 @@ def Decode(OwnAsc):
         except Exception as err:
             if(str(err)[0:29]=="list.remove(x): x not in list"):
                 break
-    """for _ in range(len(arr)):
-        print(arr[_])"""
+                
     file.close()
     
-    """
-    if(arr[i]!="1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "0"):
-        for key in OwnAsc:
-            if(arr[i] in OwnAsc.keys()):
-                xx=int(OwnAsc[arr[i]])
-                print("xx = ", xx)
-            else:
-                xx=int(arr[i])"""
+
     #kepp doing until brokcen
     while True:
         try:
@@ -187,12 +182,7 @@ def Decode(OwnAsc):
     
 
 
-    """
-    for y in range(hight):
-        for x in range(width):
-            r,g,b,a=RGBvalD.getpixel( (x,y) )
-            if(a!=255):
-                m=m+1""" # old code just in case
+
 
     x=0
     y=0
@@ -263,20 +253,6 @@ def Encode(OwnAsc):
 
     #Inputing msg
     msg = input("Enter MSG: ") # Getting msg input #
-
-    """
-    file=open("key.txt", "r") # opning key
-    fileAPP=open("key.txt","a") # opning key for adding things
-    arr=[]  
-    arrord=[]
-    arrordsplit=[]
-    var=file.readline()
-
-    for i in range(0,len(var)):
-        arr.append(var[i])
-        arrord.append(arr[i])
-        for l in range(len(str(arrord[i]))):
-            arrordsplit.append(str(arrord[i])[l])""" #old code if new idea no work
 
     
     file=open("key.txt", "r")
@@ -391,8 +367,6 @@ def check(var, randGEN, lock):
         return True
     else:
         return False
-    
-    
 
 while True:
     inp=input("Type: ")
@@ -402,80 +376,74 @@ while True:
     elif(inp=="2"):
         Encode(OwnAsc)
     elif(inp=="3"): 
-
-        
-        passes=0
+        passA=0
+        passAcap=0
+        passN=0
+        passS=0
         lock=set()
         # Generator #
-        for i in range(60):
-            passA=0
-            passAcap=0
-            passN=0
-            passS=0
-            lock=set()
-            # Generator #
-            for i in range(60):
-                rand=randint(0,16)
-                #alfbet
-                if(rand>5 and rand<10 and passA!=len(abc)-1): # 6,7,8,9
-                    randGEN=randint(0,len(abc)-1)
+        for i in range(100):
+            rand=randint(0,16)
+            #alfbet
+            if(rand>5 and rand<10 and passA!=len(abc)-1): # 6,7,8,9
+                randGEN=randint(0,len(abc)-1)
 
-                    while True:
-                        if(check(abc, randGEN, lock)==True): # if the check retruens vlaue True
-                            randGEN=randint(0,len(abc)-1)
-                        else:
-                            lock.add( abc[randGEN] ) 
-                            break
-                        if(passA==len(abc)-1):
-                            break
-                    passA=passA+1
+                while True:
+                    if(check(abc, randGEN, lock)==True): # if the check retruens vlaue True
+                        randGEN=randint(0,len(abc)-1)
+                    else:
+                        lock.add( abc[randGEN] ) 
+                        break
+                    if(passA==len(abc)-1):
+                        break
+                passA=passA+1
 
-                #numbers
-                elif(rand<5 and rand>0 and passN!=len(numbers)-1 ): # 4,3,2,1
-                    randGEN=randint(0,len(numbers)-1)
-                    
-                    while True:
-                        if(check(numbers, randGEN, lock)==True ): # if the check retruens vlaue True
-                            randGEN=randint(0,len(numbers)-1)
-                        else:
-                            lock.add( numbers[randGEN] ) 
-                            break    
-                        if(passA==len(numbers)-1):
-                            break
-                    passN=passN+1
-
-                #symbols
-                elif( rand==5 or rand==10 or rand==0 or rand==11 and passN!=len(sym)-1): # 0, 5, 10, 11
-                    randGEN=randint(0,len(sym)-1)
-
-                    while True:
-                        if(check(sym, randGEN, lock)==True): # if the check retruens vlaue True
-                            randGEN=randint(0,len(sym)-1)
-                        else:
-                            lock.add( sym[randGEN] ) 
-                            break
-                        if(passS==len(abc)-1):
-                            break
-                    passS=passS+1
-
-                elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
-                    randGEN=randint(0, len(abcap)-1)
-
-                    while True:
-                        if(check(abcap, randGEN, lock)==True):
-                            randGEN=randint(0,len(abcap)-1)
-                        else:
-                            lock.add( abcap[randGEN] )
-                            break
-                        if(passAcap==len(abc)-1):
-                            break
-                    passAcap=passAcap+1
+            #numbers
+            elif(rand<5 and rand>0 and passN!=len(numbers)-1 ): # 4,3,2,1
+                randGEN=randint(0,len(numbers)-1)
                 
-                ListLock=list(lock)
-                file=open("key.txt", "w")
-                for i in range(len(ListLock)-1):
-                    file.write(ListLock[i])
-                file.close()
+                while True:
+                    if(check(numbers, randGEN, lock)==True ): # if the check retruens vlaue True
+                        randGEN=randint(0,len(numbers)-1)
+                    else:
+                        lock.add( numbers[randGEN] ) 
+                        break    
+                    if(passA==len(numbers)-1):
+                        break
+                passN=passN+1
+
+            #symbols
+            elif( rand==5 or rand==10 or rand==0 or rand==11 and passN!=len(sym)-1): # 0, 5, 10, 11
+                randGEN=randint(0,len(sym)-1)
+
+                while True:
+                    if(check(sym, randGEN, lock)==True): # if the check retruens vlaue True
+                        randGEN=randint(0,len(sym)-1)
+                    else:
+                        lock.add( sym[randGEN] ) 
+                        break
+                    if(passS==len(abc)-1):
+                        break
+                passS=passS+1
+
+            elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
+                randGEN=randint(0, len(abcap)-1)
+
+                while True:
+                    if(check(abcap, randGEN, lock)==True):
+                        randGEN=randint(0,len(abcap)-1)
+                    else:
+                        lock.add( abcap[randGEN] )
+                        break
+                    if(passAcap==len(abc)-1):
+                        break
+                passAcap=passAcap+1
+             
+            ListLock=list(lock)
+            file=open("key.txt", "w")
+            for i in range(len(ListLock)-1):
+                file.write(ListLock[i])
+            file.close()
 
     else:
         img=Image.open("images/YourEncodedImage.png")
