@@ -230,7 +230,7 @@ def Decode(OwnAsc):
     print(Style.RESET_ALL,"\n\n-------------------------------")
     file.close()
     input("Press any key to countiue\t")
-    print("Returning to menu")
+    print(Style.RESET_ALL,"Returning to menu")
     IdontKnowWhatToCallThisVar=randint(0,1)
     if(IdontKnowWhatToCallThisVar==0):
         sleep(0.5)
@@ -320,7 +320,7 @@ def Encode(OwnAsc):
                     elif(y==hight and x==width):
                         print("MSG can not be fittied in this img")
 
-                        #quit() 
+                        #quit() Do somwthing hear
                     
                     try:
 
@@ -330,7 +330,7 @@ def Encode(OwnAsc):
                                 
                                 if(arr[i] in OwnAsc.keys()):
                                     xx=int(OwnAsc[arr[i]])
-                                    print("xx = ", xx)
+                                    #print("xx = ", xx)
                                 else:
                                     xx=int(arr[i])
 
@@ -383,7 +383,10 @@ def genrator(var ,passes):
 
 
 while True:
-    inp=input("Type: ")
+    print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.CYAN, "\n1.Encode the Image",Fore.LIGHTMAGENTA_EX, "\n2.Decode the image", Fore.GREEN,"\n3.Genrate key",Style.RESET_ALL)
+    sys.stdout.write("Type the number hear: ")
+    inp=input(Fore.MAGENTA) # try to see if number and other exsceptions
+    print(Style.RESET_ALL)
     Clear()
     if(inp=="1"):
         Decode(OwnAsc)
@@ -420,9 +423,10 @@ while True:
                 file.write(ListLock[i])
             file.close()
             
-    else:
+    """else:
         img=Image.open("images/YourEncodedImage.png")
         R=img.convert("RGBA")
         for i in range(100):
             print(img.getpixel((i,0)))
         quit()
+"""#Incase i wnat to
