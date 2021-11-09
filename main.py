@@ -138,6 +138,7 @@ def Decode(OwnAsc):
             inpSt=int(input(Fore.MAGENTA)) # user input
             if(inpSt==1): # DO MORE HEAR
                 try:
+                    Clear()
                     print(Style.RESET_ALL,"what File do you want to open: ") 
                     sys.stdout.write("Dont forget to put the folder before the file name. E.g images/image.png")
                     FileOpen=str(input(Fore.MAGENTA))
@@ -148,8 +149,8 @@ def Decode(OwnAsc):
             elif(inpSt==2):
                 Style.RESET_ALL
                 FileOpen="images/YourEncodedImage.png"
-
-            elif(inpSt>2 or inpSt<1): # Rasie exception on purpose
+            
+            elif(inpSt!=1 or inpSt!=2): # Rasie exception on purpose
                 2+None    
 
             imgDecode=Image.open(FileOpen) 
@@ -196,10 +197,10 @@ def Decode(OwnAsc):
                     for key in OwnAsc:
                         if(arr[i] in OwnAsc.keys()):
                             xx=int(OwnAsc[arr[i]])
-                            print("xx = ", xx)
+                            #print("xx = ", xx)
                         else:
                             xx=int(arr[i])
-                            print("xx when norm=",xx)
+                            #print("xx when norm=",xx)
                 # and hear sould be n=n+1
                 r,g,b,a=RGBvalD.getpixel((xx,y))
                 chrR=chr(r)
@@ -213,7 +214,7 @@ def Decode(OwnAsc):
 
     print(Style.RESET_ALL)
 
-    file=open("msg.txt", "w")
+    file=open("messages/msg.txt", "w")
     #write the msg to file
     for i in range(len(msg)):
         #print(i)
@@ -383,16 +384,34 @@ def genrator(var ,passes):
 
 
 while True:
-    print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.CYAN, "\n1.Encode the Image",Fore.LIGHTMAGENTA_EX, "\n2.Decode the image", Fore.GREEN,"\n3.Genrate key",Style.RESET_ALL)
+    print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Style.RESET_ALL)
     sys.stdout.write("Type the number hear: ")
     inp=input(Fore.MAGENTA) # try to see if number and other exsceptions
     print(Style.RESET_ALL)
     Clear()
     if(inp=="1"):
-        Decode(OwnAsc)
-    elif(inp=="2"):
         Encode(OwnAsc)
+    elif(inp=="2"):
+        Decode(OwnAsc)
     elif(inp=="3"): 
+        print("Genrating Key \\")
+        sleep(0.25)
+        Clear()
+        Clear()
+        print("Genrating Key /")
+        sleep(0.25)
+        Clear()
+        rand=randint(0,1)
+        if(rand==1):
+            print("Genrating Key --")
+            sleep(0.25)
+            Clear()
+            rand=randint(0,1)
+            if(rand==1):
+                print("Genrating Key |")
+                sleep(0.25)
+                Clear()
+
         passA=0
         passAcap=0
         passN=0
@@ -411,7 +430,7 @@ while True:
 
             #symbols
             elif( rand==5 or rand==10 or rand==0 or rand==11 and passS!=len(sym)-1): # 0, 5, 10, 11
-                genrator(sym,passS)
+                genrator(sym,passS,)
 
             #caps
             elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
