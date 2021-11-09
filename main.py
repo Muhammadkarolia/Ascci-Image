@@ -223,13 +223,15 @@ def Decode(OwnAsc):
             file.close()
             file=open("messages/msg.txt", "r")
             break
+    Clear()
 
     #prit out msg
     print("Your meassage reads\n-------------------------------\n",Fore.YELLOW)
     for _ in range(len(msg)):
         sys.stdout.write(msg[_])
-    print(Style.RESET_ALL,"\n\n-------------------------------")
+    print(Style.RESET_ALL,"\n\n-------------------------------",Fore.RED)
     file.close()
+    print("this msg is stored in the messages folder, in the msg.txt file.",Style.RESET_ALL)
     input("Press any key to countiue\t")
     print(Style.RESET_ALL,"Returning to menu")
     IdontKnowWhatToCallThisVar=randint(0,1)
