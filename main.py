@@ -358,6 +358,7 @@ def Encode(OwnAsc):
 
     #save the img
     img1.save("images/YourEncodedImage.png")
+    Clear()
 
 abc="asdfghjklzxcvbnmqwertyuiop"
 abcap="QWERTYUIOPASDFGHJKLZXCVBNM"
