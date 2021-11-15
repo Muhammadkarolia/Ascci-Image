@@ -142,6 +142,7 @@ def Decode(OwnAsc):
 
     elif(len(FilesInFolder)==0):
         print("There is no floders in the file")
+        quit()
     elif(len(FilesInFolder)==1):
         print("found a file")  
         print(FilesInFolder[0])
