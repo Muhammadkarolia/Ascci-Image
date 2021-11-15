@@ -101,17 +101,14 @@ OwnAsc={
 }
 
 def Decode(OwnAsc):
-    file=open("messages/msg.txt", "w")
-    print("do you have your own image name are do you want to open the the defealt decoding image?\n",Fore.RED,"1. I have my own\n",Fore.CYAN,"2.I am using the \"YourEncodedImage\" file ",Style.RESET_ALL)
-    sys.stdout.write("Wrtie your anwser hear -->")
+    file=open("MeassageResived.txt", "w")
 
-
-    file=open("key.txt", "r") # opning the file #
+    file=open("AppFiles/key.txt", "r") # opning the file #
     arr=[] # declaring array to house the things
 
     # Itrates trough each item in file
     LinesInFile=""
-    for line in open("key.txt").readlines(): 
+    for line in open("AppFiles/key.txt").readlines(): 
         LinesInFile=LinesInFile+line
         #print("lines in ", LinesInFile)
 
@@ -131,48 +128,34 @@ def Decode(OwnAsc):
                 
     file.close()
     
+    
+    FilesInFolder=os.listdir("DragTheImageToDecodeHear")
+    if(len(FilesInFolder)>1):
 
-    #kepp doing until brokcen
-    while True:
+        print("There is more then one file in the \"DragTheImageToDecodeHear\"")
+        for i in range(len(FilesInFolder)):
+            print(Fore.YELLOW+str(i+1)+".",FilesInFolder[i],Style.RESET_ALL)
+        sys.stdout.write("What file do you want to open. Type the number -->")
+        FileToOpen=int(input(Fore.MAGENTA)) # Not a number "invalid literal for int() with base 10:" 39
+        FileToOpen=FilesInFolder[FileToOpen] # "list index out of range" 23
+        imgDecode=Image.open(FileToOpen) # File Does not exsit "No such file or directory:" 26
+
+    elif(len(FilesInFolder)==0):
+        print("There is no floders in the file")
+    elif(len(FilesInFolder)==1):
+        print("found a file")  
+        print(FilesInFolder[0])
+        FileToOpen=str(FilesInFolder[0])
+
         try:
-            inpSt=int(input(Fore.MAGENTA)) # user input
-            if(inpSt==1): # DO MORE HEAR
-                try:
-                    Clear()
-                    print(Style.RESET_ALL,"what File do you want to open: ") 
-                    sys.stdout.write("Dont forget to put the folder before the file name. E.g images/image.png")
-                    FileOpen=str(input(Fore.MAGENTA))
+            imgDecode=Image.open("DragTheImageToDecodeHear/"+FileToOpen)
+        except Exception as err:
+            print(err)
+            if(str(err)=="cannot identify image file"):
+                print("this file type is not supported \nPlease double check")
+                quit()
 
-                except Exception as errr:
-                    print(errr) # Handle exception better
-
-            elif(inpSt==2):
-                Style.RESET_ALL
-                FileOpen="images/YourEncodedImage.png"
             
-            elif(inpSt!=1 or inpSt!=2): # Rasie exception on purpose
-                2+None    
-
-            imgDecode=Image.open(FileOpen) 
-            break # no errors so break 
-
-
-        except Exception as err: # Ther is error
-
-            if(str(err)[0:39]=="invalid literal for int() with base 10:"): # if they no enter number
-                print(Style.RESET_ALL,"Please enter a number")
-                sys.stdout.write("Wrtie your awnser hear:\t")
-
-            elif(str(err)[0:55]=="unsupported operand type(s) for +: 'int' and 'NoneType'"): # if they enter number that is not valied
-                print(Style.RESET_ALL,"Please enter a number bewteen 1 and 2")
-                sys.stdout.write("Wrtie your awnser hear:\t")
-            else:
-                print(err) # unkown err occared
-            
-
-
-            #print(Style.RESET_ALL, "\n",error)
-            #Send email of err
 
     width, hight = imgDecode.size[0], imgDecode.size[1] # get highet and width of image
     RGBvalD=imgDecode.convert("RGBA") #  convert to RGBA
@@ -213,14 +196,14 @@ def Decode(OwnAsc):
 
     print(Style.RESET_ALL)
 
-    file=open("messages/msg.txt", "w")
+    file=open("MeassageResived.txt", "w")
     #write the msg to file
     for i in range(len(msg)):
         #print(i)
         file.write(msg[i])
         if(i==len(msg)):
             file.close()
-            file=open("messages/msg.txt", "r")
+            file=open("MeassageResived.txt", "r")
             break
     Clear()
 
@@ -230,7 +213,7 @@ def Decode(OwnAsc):
         sys.stdout.write(msg[_])
     print(Style.RESET_ALL,"\n\n-------------------------------",Fore.RED)
     file.close()
-    print("This msg is stored in the messages folder, in the msg.txt file.",Style.RESET_ALL)
+    print("This msg is stored in the messages folder, in the MeassageResivedfile.",Style.RESET_ALL)
     input("Press any key to countiue\t")
     print(Style.RESET_ALL,"Returning to menu")
     IdontKnowWhatToCallThisVar=randint(0,1)
@@ -249,19 +232,19 @@ def Decode(OwnAsc):
 
 def Encode(OwnAsc):
     # Image # 
-    img = Image.open("images/DontDelThisFile.png") # Opnning up the image #
+    img = Image.open("AppFiles/DontDelThisFile.png") # Opnning up the image #
     width, hight = img.size[0], img.size[1]
-    img1 = Image.open("images/DontDelThisFile.png")
+    img1 = Image.open("AppFiles/DontDelThisFile.png")
 
     #Inputing msg
     msg = input("Enter MSG: ") # Getting msg input #
 
     
-    file=open("key.txt", "r")
+    file=open("AppFiles/key.txt", "r")
     arr=[] 
 
     LinesInFile=""
-    for line in open("key.txt").readlines(): 
+    for line in open("AppFiles/key.txt").readlines(): 
         LinesInFile=LinesInFile+line
 
     for i in range(0,len(LinesInFile)):
@@ -356,7 +339,7 @@ def Encode(OwnAsc):
 
 
     #save the img
-    img1.save("images/YourEncodedImage.png")
+    img1.save("Encoded Image/Encoded Image.png")
     Clear()
 
 abc="asdfghjklzxcvbnmqwertyuiop"
@@ -439,7 +422,7 @@ while True:
                 genrator(abcap, passAcap)
              
             ListLock=list(lock)
-            file=open("key.txt", "w")
+            file=open("AppFiles/key.txt", "w")
             for i in range(len(ListLock)-1):
                 file.write(ListLock[i])
             file.close()
