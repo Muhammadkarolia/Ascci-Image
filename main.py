@@ -137,8 +137,9 @@ def Decode(OwnAsc):
             print(Fore.YELLOW+str(i+1)+".",FilesInFolder[i],Style.RESET_ALL)
         sys.stdout.write("What file do you want to open. Type the number -->")
         FileToOpen=int(input(Fore.MAGENTA)) # Not a number "invalid literal for int() with base 10:" 39
-        FileToOpen=FilesInFolder[FileToOpen] # "list index out of range" 23
-        imgDecode=Image.open(FileToOpen) # File Does not exsit "No such file or directory:" 26
+        FileToOpen=FilesInFolder[FileToOpen-1] # "list index out of range" 23
+        imgDecode=Image.open("DragTheImageToDecodeHear/"+FileToOpen) # File Does not exsit "No such file or directory:" 26
+        
 
     elif(len(FilesInFolder)==0):
         print("There is no floders in the file")
