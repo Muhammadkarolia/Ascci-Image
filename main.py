@@ -1,10 +1,9 @@
-from PIL import Image
 import os
 import sys
+from PIL import Image
 from colorama import Fore, Style 
 from time import sleep
 from random import randint
-
 
 Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
 
@@ -100,6 +99,65 @@ OwnAsc={
     "M": 90,
 }
 
+def FileSlect(fileTopen, path, Hfile): # FileTopen is the file that is need to be portaryed # path is the path of the file that is slected # Hfile 
+    FilesInSlected=os.listdir(fileTopen)
+
+    if(len(FilesInSlected)==0):
+        print("there are not files in the folder")
+        return True
+
+    for i in range(len(FilesInSlected)):
+
+        if(os.path.isfile(Hfile+"/"+os.listdir(fileTopen)[i])==True):
+
+            print(Fore.YELLOW+str(i+1)+"."+FilesInSlected[i]+Style.RESET_ALL)
+
+
+        elif(os.path.isfile(Hfile+"/"+FilesInSlected[i])==False):
+
+            print(Fore.RED+str(i+1)+"."+FilesInSlected[i]+Style.RESET_ALL)
+
+
+    sys.stdout.write("Which of these files do you want to open: ")
+    while True:
+        try:
+            FileSlected=int(input(Fore.MAGENTA))
+            #print(len(FilesInSlected))
+            if(FileSlected>len(FilesInSlected) or FileSlected<0):
+                print(Style.RESET_ALL+"This number is out of range")
+                sys.stdout.write("-->")
+            else:
+                break
+        except Exception as err:
+            if(str(err)[0:39]=="invalid literal for int() with base 10:"):
+                print(Style.RESET_ALL+"please enter a valid number")
+                sys.stdout.write("-->")
+            
+    
+    if(os.path.isfile(Hfile+"/"+FilesInSlected[FileSlected-1])):
+        path=Hfile+"/"+FilesInSlected[FileSlected-1]
+        print("isfile",path)
+
+    elif(os.path.isdir(Hfile+"/"+FilesInSlected[FileSlected-1])):
+        print(str(Hfile+"/"+FilesInSlected[FileSlected-1]), path, str(Hfile+"/"+FilesInSlected[FileSlected-1]))
+        path=FileSlect(str(Hfile+"/"+FilesInSlected[FileSlected-1]), path, str(Hfile+"/"+FilesInSlected[FileSlected-1]))
+        print("isdir",path)
+        
+    if(path==True):
+        return "nee"
+
+    try:
+        f, Ftype=os.path.splitext(path)
+        if(Ftype==".png"):
+            return path
+        elif(Ftype!=".png"):
+            print(Style.RESET_ALL+"We only suppurt type .png")
+            return False
+    except:
+        pass
+
+
+
 def Decode(OwnAsc):
     file=open("MeassageResived.txt", "w")
 
@@ -128,36 +186,92 @@ def Decode(OwnAsc):
                 
     file.close()
     
+    #Welcome to the decoding side. 
+    print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
+    print(Fore.RED+"1.AppFiles\n"+Fore.RED+"2.DragTheImageToDecodeHear\n"+Fore.RED+"3.Encoded Image",Style.RESET_ALL)
+    sys.stdout.write("Write the number before the file you want to slect: ")
+
+    while True:
+        while True:
+            try:
+                FileSlected=int(input(Fore.MAGENTA)) # err handling: str entred    #   number not in list.
+                break
+            except Exception as err:
+                if(str(err)[0:39]=="invalid literal for int() with base 10:"):
+                    Clear()
+                    print(Fore.RED+"Please entre a number: "+Style.RESET_ALL)
+                    print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+                    sys.stdout.write("Write the number before the file you want to slect: ")
+        print(Style.RESET_ALL)
+        Clear() 
+
+        if(FileSlected==1):
+            path=str()
+            print(path)
+            FileSlectedPath=FileSlect("AppFiles", path, "AppFiles")
+            print("FileSlectedPath", FileSlectedPath)
+            if(FileSlectedPath!=True and FileSlectedPath!=False and FileSlectedPath!=None):
+                imgDecode=Image.open(FileSlectedPath)
+                break
+            elif(FileSlectedPath==True or FileSlectedPath==False or FileSlectedPath==None or FileSlectedPath=="nee"):
+                input("Press any key to contoue ")
+                Clear()
+
+                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+                
+
+        elif(FileSlected==2):
+            path=str()
+            FileSlectedPath=FileSlect("DragTheImageToDecodeHear", path, "DragTheImageToDecodeHear")
+
+            if(FileSlectedPath!=True and FileSlectedPath!=False):
+                imgDecode=Image.open(FileSlectedPath)
+                break
+            elif(FileSlectedPath==True or FileSlectedPath==False):
+                input("Press any key to contoue ")
+                Clear()
+
+                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+            elif(FileSlectedPath=="nee"):
+                input("Press any key to contoue ")
+                Clear()
+
+                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+                
+
+        elif(FileSlected==3):
+            path=str()
+            print(path)
+            FileSlectedPath=FileSlect("Encoded Image", path, "Encoded Image")
+
+            if(FileSlectedPath!=True and FileSlectedPath!=False):
+                imgDecode=Image.open(FileSlectedPath)
+                break
+            elif(FileSlectedPath==True or FileSlectedPath==False):
+                input("Press any key to contoue ")
+                Clear()
+
+                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+            elif(FileSlectedPath=="nee"):
+                input("Press any key to contoue ")
+                Clear()
+
+                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+
+        elif(FileSlected>3 or FileSlected<1):
+            print(Fore.RED+"Please entre a number bewteen 1 and 3"+Style.RESET_ALL)
+
+            print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+            sys.stdout.write("Write the number before the file you want to slect: ")
+
+
+
     
-    FilesInFolder=os.listdir("DragTheImageToDecodeHear")
-    if(len(FilesInFolder)>1):
-
-        print("There is more then one file in the \"DragTheImageToDecodeHear\"")
-        for i in range(len(FilesInFolder)):
-            print(Fore.YELLOW+str(i+1)+".",FilesInFolder[i],Style.RESET_ALL)
-        sys.stdout.write("What file do you want to open. Type the number -->")
-        FileToOpen=int(input(Fore.MAGENTA)) # Not a number "invalid literal for int() with base 10:" 39
-        FileToOpen=FilesInFolder[FileToOpen-1] # "list index out of range" 23
-        imgDecode=Image.open("DragTheImageToDecodeHear/"+FileToOpen) # File Does not exsit "No such file or directory:" 26
-        
-
-    elif(len(FilesInFolder)==0):
-        print("There is no floders in the file")
-        quit()
-    elif(len(FilesInFolder)==1):
-        print("found a file")  
-        print(FilesInFolder[0])
-        FileToOpen=str(FilesInFolder[0])
-
-        try:
-            imgDecode=Image.open("DragTheImageToDecodeHear/"+FileToOpen)
-        except Exception as err:
-            print(err)
-            if(str(err)=="cannot identify image file"):
-                print("this file type is not supported \nPlease double check")
-                quit()
-
-            
 
     width, hight = imgDecode.size[0], imgDecode.size[1] # get highet and width of image
     RGBvalD=imgDecode.convert("RGBA") #  convert to RGBA
