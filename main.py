@@ -4,8 +4,10 @@ from PIL import Image
 from colorama import Fore, Style 
 from time import sleep
 from random import randint
+from functools import lru_cache
 
 Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
+Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
 
 OwnAsc={
     "q": 10,
@@ -99,62 +101,100 @@ OwnAsc={
     "M": 90,
 }
 
-def FileSlect(fileTopen, path, Hfile): # FileTopen is the file that is need to be portaryed # path is the path of the file that is slected # Hfile 
-    FilesInSlected=os.listdir(fileTopen)
 
-    if(len(FilesInSlected)==0):
-        print("there are not files in the folder")
-        return True
+@lru_cache(maxsize=50)
+def Read(string):
+    listt=[]
+    items=0 
+    WhatRemove=list()
+    #print("string=",string)
+    for i in range(len(string)):
+        listt.append(string[i])
+    #print(listt)
+    for i in range(len(listt)):
+        if(listt[i]=="/"):
+            items=i
+    #print(listt)     
+         
+    for i in range(items, len(listt)):
+        #WhatRemove=WhatRemove+listt[i]
+        WhatRemove.append(i)
+        #print(WhatRemove)
+    #print(listt)
+    for i in range(len(WhatRemove)):
+        listt[WhatRemove[i]]="@plz]#;efeq1234567890poiuytrdcvbn"
 
-    for i in range(len(FilesInSlected)):
-
-        if(os.path.isfile(Hfile+"/"+os.listdir(fileTopen)[i])==True):
-
-            print(Fore.YELLOW+str(i+1)+"."+FilesInSlected[i]+Style.RESET_ALL)
-
-
-        elif(os.path.isfile(Hfile+"/"+FilesInSlected[i])==False):
-
-            print(Fore.RED+str(i+1)+"."+FilesInSlected[i]+Style.RESET_ALL)
-
-
-    sys.stdout.write("Which of these files do you want to open: ")
-    while True:
+    #print(listt)
+    for i in range(len(listt)):
         try:
-            FileSlected=int(input(Fore.MAGENTA))
-            #print(len(FilesInSlected))
-            if(FileSlected>len(FilesInSlected) or FileSlected<0):
-                print(Style.RESET_ALL+"This number is out of range")
-                sys.stdout.write("-->")
-            else:
-                break
-        except Exception as err:
-            if(str(err)[0:39]=="invalid literal for int() with base 10:"):
-                print(Style.RESET_ALL+"please enter a valid number")
-                sys.stdout.write("-->")
-            
+            listt.remove("@plz]#;efeq1234567890poiuytrdcvbn")
+        except:
+            pass
+    #print(listt)
+    paf=""
+    for i in range(len(listt)):
+        paf=paf+listt[i] 
+        #print(listt[i])
+        #print("paf="+paf)
+    return paf
+
+
+@lru_cache(maxsize=50)
+def FileSlect(fileTopen, path):
+    path=fileTopen+"/"
+    print(Fore.LIGHTBLUE_EX+path)
+    path=str()
+    FilesInslected=os.listdir(fileTopen)
+    #print(FilesInslected)
+
+    for i in range(len(FilesInslected)):
+        if(os.path.isfile(fileTopen+"/"+FilesInslected[i])==True):
+            print(Fore.YELLOW+str(i+1)+"."+FilesInslected[i]+Style.RESET_ALL)
+
+        elif(os.path.isdir(fileTopen+"/"+FilesInslected[i])==True):
+            print(Fore.RED+str(i+1)+"."+FilesInslected[i]+Style.RESET_ALL)
+        iii=i
+    print(Style.RESET_ALL+str(iii+2)+".Go back")
+    sys.stdout.write("Write the number of the option --> ")
     
-    if(os.path.isfile(Hfile+"/"+FilesInSlected[FileSlected-1])):
-        path=Hfile+"/"+FilesInSlected[FileSlected-1]
-        print("isfile",path)
+    FileSlected=int(input(Fore.MAGENTA))
+    #print("pppp",path)
 
-    elif(os.path.isdir(Hfile+"/"+FilesInSlected[FileSlected-1])):
-        print(str(Hfile+"/"+FilesInSlected[FileSlected-1]), path, str(Hfile+"/"+FilesInSlected[FileSlected-1]))
-        path=FileSlect(str(Hfile+"/"+FilesInSlected[FileSlected-1]), path, str(Hfile+"/"+FilesInSlected[FileSlected-1]))
-        print("isdir",path)
+    if(FileSlected==iii+2):
+        path=Read(fileTopen)
+        #print(Fore.WHITE,path)
         
-    if(path==True):
-        return "nee"
+    
+    elif(FileSlected<iii+3 or FileSlected>1):
+        #path=Read(path)
+        FileSel=FilesInslected[FileSlected-1]
+        path=fileTopen+"/"+FileSel    
 
-    try:
-        f, Ftype=os.path.splitext(path)
-        if(Ftype==".png"):
+    if(os.path.isdir(path)==True):
+        if(len(os.listdir(path))==0):
+            Clear()
+            #isitEmpty=True
+            print(Style.RESET_ALL+"This folder is empty")
+            #print(fileTopen)
+            path=fileTopen
+            FileSlect(path,path)
             return path
-        elif(Ftype!=".png"):
-            print(Style.RESET_ALL+"We only suppurt type .png")
-            return False
-    except:
-        pass
+            
+
+        elif(len(os.listdir(path))>0):
+            #isitEmpty=False
+            Clear()
+            path=FileSlect(path, path)
+            return path
+
+    elif(os.path.isfile(path)==True):
+        print(path)
+        name, ext = os.path.splitext(path)
+        if(ext!=".png"):
+            print("This is not a png file")
+        else:
+            return path
+    
 
 
 
@@ -185,93 +225,54 @@ def Decode(OwnAsc):
                 break
                 
     file.close()
-    
+
     #Welcome to the decoding side. 
     print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
-    print(Fore.RED+"1.AppFiles\n"+Fore.RED+"2.DragTheImageToDecodeHear\n"+Fore.RED+"3.Encoded Image",Style.RESET_ALL)
+    print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
     sys.stdout.write("Write the number before the file you want to slect: ")
 
     while True:
-        while True:
-            try:
-                FileSlected=int(input(Fore.MAGENTA)) # err handling: str entred    #   number not in list.
-                break
-            except Exception as err:
-                if(str(err)[0:39]=="invalid literal for int() with base 10:"):
-                    Clear()
-                    print(Fore.RED+"Please entre a number: "+Style.RESET_ALL)
-                    print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
-                    sys.stdout.write("Write the number before the file you want to slect: ")
-        print(Style.RESET_ALL)
-        Clear() 
-
+        FileSlected=int(input(Fore.MAGENTA))
         if(FileSlected==1):
+            Clear()
             path=str()
-            print(path)
-            FileSlectedPath=FileSlect("AppFiles", path, "AppFiles")
-            print("FileSlectedPath", FileSlectedPath)
-            if(FileSlectedPath!=True and FileSlectedPath!=False and FileSlectedPath!=None):
-                imgDecode=Image.open(FileSlectedPath)
-                break
-            elif(FileSlectedPath==True or FileSlectedPath==False or FileSlectedPath==None or FileSlectedPath=="nee"):
-                input("Press any key to contoue ")
-                Clear()
-
-                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
-                sys.stdout.write("Write the number before the file you want to slect: ")
-                
+            path=FileSlect("AppFiles", path)
+            print("path=",path)
+            imgDecode=Image.open(path)
+            break
 
         elif(FileSlected==2):
+            Clear()
             path=str()
-            FileSlectedPath=FileSlect("DragTheImageToDecodeHear", path, "DragTheImageToDecodeHear")
 
-            if(FileSlectedPath!=True and FileSlectedPath!=False):
-                imgDecode=Image.open(FileSlectedPath)
+            if(len(os.listdir("DragTheImageToDecodeHear"))==0):
+                print(Fore.LIGHTBLUE_EX+"DragTheImageToDecodeHear/"+Style.RESET_ALL)
+                print("There is noething in this file")
+                input("Press any key to countiue")
+                Clear()
+                Slect()
+                sys.stdout.write("Write the number before the file you want to slect: ")
+
+            else:
+                path=FileSlect("DragTheImageToDecodeHear", path)
+                print("path=",path)
+                imgDecode=Image.open(path)
                 break
-            elif(FileSlectedPath==True or FileSlectedPath==False):
-                input("Press any key to contoue ")
-                Clear()
-
-                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
-                sys.stdout.write("Write the number before the file you want to slect: ")
-            elif(FileSlectedPath=="nee"):
-                input("Press any key to contoue ")
-                Clear()
-
-                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
-                sys.stdout.write("Write the number before the file you want to slect: ")
-                
 
         elif(FileSlected==3):
+            Clear()
             path=str()
-            print(path)
-            FileSlectedPath=FileSlect("Encoded Image", path, "Encoded Image")
-
-            if(FileSlectedPath!=True and FileSlectedPath!=False):
-                imgDecode=Image.open(FileSlectedPath)
-                break
-            elif(FileSlectedPath==True or FileSlectedPath==False):
-                input("Press any key to contoue ")
-                Clear()
-
-                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
-                sys.stdout.write("Write the number before the file you want to slect: ")
-            elif(FileSlectedPath=="nee"):
-                input("Press any key to contoue ")
-                Clear()
-
-                print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
-                sys.stdout.write("Write the number before the file you want to slect: ")
-
+            path=FileSlect("Encoded Image", path)
+            print("path=",path)
+            imgDecode=Image.open(path)
+            break
         elif(FileSlected>3 or FileSlected<1):
-            print(Fore.RED+"Please entre a number bewteen 1 and 3"+Style.RESET_ALL)
-
-            print(Fore.RED+"1.AppFiles\n"+"2.DragTheImageToDecodeHear\n"+"3.Encoded Image"+Style.RESET_ALL)
+            Clear()
+            print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
+            print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
             sys.stdout.write("Write the number before the file you want to slect: ")
 
 
-
-    
 
     width, hight = imgDecode.size[0], imgDecode.size[1] # get highet and width of image
     RGBvalD=imgDecode.convert("RGBA") #  convert to RGBA
@@ -403,6 +404,10 @@ def Encode(OwnAsc):
         l=F
     elif(F==0 and M>0):
         l=1
+    elif(F==0 and M==0):
+        print("please enter somwthing\nRETURNING TO MENUE")
+        Clear()
+        return
     
 
     i=0
@@ -482,6 +487,7 @@ def genrator(var ,passes):
         if(passes==len(var)-1):
             break
         passes=passes+1
+
 
 
 while True:
