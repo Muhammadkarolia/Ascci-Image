@@ -242,10 +242,19 @@ def Decode(OwnAsc):
         if(FileSlected==1):
             Clear()
             path=str()
-            path=FileSlect("AppFiles", path)
-            #print("path=",path)
-            imgDecode=Image.open(path) 
-            break
+            if(len(os.listdir("AppFiles"))==0):
+                print(Fore.LIGHTBLUE_EX+"AppFiles/"+Style.RESET_ALL)
+                print("There is noething in this file")
+                input("Press any key to countiue")
+                Clear()
+                Slect()
+                sys.stdout.write("Write the number before the file you want to slect: ")
+
+            else:
+                path=FileSlect("AppFiles", path)
+                #print("path=",path)
+                imgDecode=Image.open(path) 
+                break
 
         elif(FileSlected==2):
             Clear()
@@ -267,16 +276,21 @@ def Decode(OwnAsc):
 
         elif(FileSlected==3):
             Clear()
-            #print("encodeddddddddddddddddddddddd")
-            #sleep(2)
             path=str()
-            #print("pathhhhhh",path)
-            path=FileSlect("Encoded Image", path)
-            #print("path",path)
-            #sleep(2)
-            imgDecode=Image.open(path) 
+            if(len(os.listdir("Encoded Image"))==0):
+                print(Fore.LIGHTBLUE_EX+"Encoded Image/"+Style.RESET_ALL)
+                print("There is noething in this file")
+                input("Press any key to countiue")
+                Clear()
+                Slect()
+                sys.stdout.write("Write the number before the file you want to slect: ")
 
-            break
+            else:
+                Clear()
+                path=str()
+                path=FileSlect("Encoded Image", path)
+                imgDecode=Image.open(path) 
+                break
         elif(FileSlected>3 or FileSlected<1):
             Clear()
             print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
