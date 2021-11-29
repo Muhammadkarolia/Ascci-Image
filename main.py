@@ -102,8 +102,10 @@ OwnAsc={
 }
 
 
+
 @lru_cache(maxsize=50)
 def Read(string):
+
     listt=[]
     items=0 
     WhatRemove=list()
@@ -139,8 +141,11 @@ def Read(string):
     return paf
 
 
-@lru_cache(maxsize=50)
 def FileSlect(fileTopen, path):
+#    print("itrannnnnnnn")
+ #   print("FileTopen",fileTopen)
+  #  print("path",path)
+   # sleep(2)
     path=fileTopen+"/"
     print(Fore.LIGHTBLUE_EX+path)
     path=str()
@@ -163,7 +168,6 @@ def FileSlect(fileTopen, path):
     if(FileSlected==iii+2):
         path=Read(fileTopen)
         #print(Fore.WHITE,path)
-        
     
     elif(FileSlected<iii+3 or FileSlected>1):
         #path=Read(path)
@@ -188,15 +192,17 @@ def FileSlect(fileTopen, path):
             return path
 
     elif(os.path.isfile(path)==True):
-        print(path)
+        #print(path)
         name, ext = os.path.splitext(path)
         if(ext!=".png"):
-            print("This is not a png file")
-        else:
+            print(Style.RESET_ALL+"This is not a png file")
+            input("press any key to continue")
+            path=Read(path)
+            Clear()
+            FileSlect(fileTopen, path)
             return path
-    
-
-
+        else:
+            return path 
 
 def Decode(OwnAsc):
     file=open("MeassageResived.txt", "w")
@@ -237,8 +243,8 @@ def Decode(OwnAsc):
             Clear()
             path=str()
             path=FileSlect("AppFiles", path)
-            print("path=",path)
-            imgDecode=Image.open(path)
+            #print("path=",path)
+            imgDecode=Image.open(path) 
             break
 
         elif(FileSlected==2):
@@ -254,17 +260,22 @@ def Decode(OwnAsc):
                 sys.stdout.write("Write the number before the file you want to slect: ")
 
             else:
-                path=FileSlect("DragTheImageToDecodeHear", path)
-                print("path=",path)
-                imgDecode=Image.open(path)
+                path=FileSlect("DragTheImageToDecodeHear", path=str())
+                #print("path=",path)
+                imgDecode=Image.open(path) 
                 break
 
         elif(FileSlected==3):
             Clear()
+            #print("encodeddddddddddddddddddddddd")
+            #sleep(2)
             path=str()
+            #print("pathhhhhh",path)
             path=FileSlect("Encoded Image", path)
-            print("path=",path)
-            imgDecode=Image.open(path)
+            #print("path",path)
+            #sleep(2)
+            imgDecode=Image.open(path) 
+
             break
         elif(FileSlected>3 or FileSlected<1):
             Clear()
