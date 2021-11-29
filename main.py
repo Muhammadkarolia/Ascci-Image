@@ -7,7 +7,7 @@ from random import randint
 from functools import lru_cache
 
 Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
-Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
+Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN+"\n4.Return to Home",Style.RESET_ALL)
 
 OwnAsc={
     "q": 10,
@@ -105,6 +105,10 @@ OwnAsc={
 
 @lru_cache(maxsize=50)
 def Read(string):
+    #print(string, type(string))
+    stringSplit=string.split("/")
+    if(len(stringSplit)==1):
+        return "BaseFile"
 
     listt=[]
     items=0 
@@ -167,6 +171,11 @@ def FileSlect(fileTopen, path):
 
     if(FileSlected==iii+2):
         path=Read(fileTopen)
+        if(path=="BaseFile"):
+            Clear()
+            Slect()
+            sys.stdout.write("Write the number of your option -->")
+            return path
         #print(Fore.WHITE,path)
     
     elif(FileSlected<iii+3 or FileSlected>1):
@@ -234,7 +243,7 @@ def Decode(OwnAsc):
 
     #Welcome to the decoding side. 
     print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
-    print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
+    print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN +"\n4.Return to Home",Style.RESET_ALL)
     sys.stdout.write("Write the number before the file you want to slect: ")
 
     while True:
@@ -252,9 +261,9 @@ def Decode(OwnAsc):
 
             else:
                 path=FileSlect("AppFiles", path)
-                #print("path=",path)
-                imgDecode=Image.open(path) 
-                break
+                if(path!="BaseFile"):
+                    imgDecode=Image.open(path) 
+                    break
 
         elif(FileSlected==2):
             Clear()
@@ -269,10 +278,10 @@ def Decode(OwnAsc):
                 sys.stdout.write("Write the number before the file you want to slect: ")
 
             else:
-                path=FileSlect("DragTheImageToDecodeHear", path=str())
-                #print("path=",path)
-                imgDecode=Image.open(path) 
-                break
+                path=FileSlect("DragTheImageToDecodeHear", path)
+                if(path!="BaseFile"):
+                    imgDecode=Image.open(path) 
+                    break
 
         elif(FileSlected==3):
             Clear()
@@ -286,12 +295,16 @@ def Decode(OwnAsc):
                 sys.stdout.write("Write the number before the file you want to slect: ")
 
             else:
-                Clear()
-                path=str()
+                
                 path=FileSlect("Encoded Image", path)
-                imgDecode=Image.open(path) 
-                break
-        elif(FileSlected>3 or FileSlected<1):
+                if(path!="BaseFile"):
+                    imgDecode=Image.open(path) 
+                    break
+        elif(FileSlected==4):
+            print(Style.RESET_ALL)
+            Clear()
+            return
+        elif(FileSlected>4 or FileSlected<1):
             Clear()
             print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
             print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
