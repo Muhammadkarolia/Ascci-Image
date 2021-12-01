@@ -165,8 +165,14 @@ def FileSlect(fileTopen, path):
         iii=i
     print(Style.RESET_ALL+str(iii+2)+".Go back")
     sys.stdout.write("Write the number of the option --> ")
-    
-    FileSlected=int(input(Fore.MAGENTA))
+    while True:
+        try:
+            FileSlected=int(input(Fore.MAGENTA))
+            break
+        except Exception as err: 
+            if(str(err)[0:len("invalid literal for int() with base 10:")]==""):
+                print(Fore.RED)
+                sys.stdout.write("Please entre a number:")
     #print("pppp",path)
 
     if(FileSlected==iii+2):
@@ -174,7 +180,8 @@ def FileSlect(fileTopen, path):
         if(path=="BaseFile"):
             Clear()
             Slect()
-            sys.stdout.write("Write the number of your option -->")
+            sys.stdout.write("Write the number of your option --> ")
+            path="BaseFile"
             return path
         #print(Fore.WHITE,path)
     
@@ -232,6 +239,7 @@ def Decode(OwnAsc):
     # Goes through the arry and removes \n
     for i in range(len(arr)):
         # try to remove the chater
+        
         try:
             arr.remove("\n")
         #if the charter is not there then break the loop
@@ -240,14 +248,24 @@ def Decode(OwnAsc):
                 break
                 
     file.close()
+    
 
     #Welcome to the decoding side. 
-    print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
+    print(Fore.MAGENTA+"Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
     print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN +"\n4.Return to Home",Style.RESET_ALL)
     sys.stdout.write("Write the number before the file you want to slect: ")
 
     while True:
-        FileSlected=int(input(Fore.MAGENTA))
+        while True:
+            try:
+                FileSlected=int(input(Fore.MAGENTA))
+                break
+            except Exception as err:
+                if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
+                    print(Fore.RED)
+                    sys.stdout.write("Please entre a number: ")
+
+
         if(FileSlected==1):
             Clear()
             path=str()
@@ -307,8 +325,8 @@ def Decode(OwnAsc):
         elif(FileSlected>4 or FileSlected<1):
             Clear()
             print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
-            print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
-            sys.stdout.write("Write the number before the file you want to slect: ")
+            Slect()
+            sys.stdout.write("Please entre a number: ")
 
 
 
@@ -392,9 +410,13 @@ def Encode(OwnAsc):
     img1 = Image.open("AppFiles/DontDelThisFile.png")
 
     #Inputing msg
-    msg = input("Enter MSG: ") # Getting msg input #
+    while True:
+        msg = input("Enter MSG: ") # Getting msg input #
+        if(len(msg)==0):
+            print(Fore.RED+"Please type something",Style.RESET_ALL)
+        else:
+            break
 
-    
     file=open("AppFiles/key.txt", "r")
     arr=[] 
 
