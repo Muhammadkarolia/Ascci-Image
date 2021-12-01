@@ -248,11 +248,25 @@ def Decode(OwnAsc):
                 break
                 
     file.close()
-    
+
+    extra=list()
+    FileInBase=os.listdir()
+    for i in range(len(FileInBase)):
+        if(os.path.isfile(FileInBase[i])==True):
+            f, ext=os.path.splitext(FileInBase[i])
+            if(ext==".png"):
+                extra.append(FileInBase[i])
+
 
     #Welcome to the decoding side. 
     print(Fore.MAGENTA+"Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
     print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN +"\n4.Return to Home",Style.RESET_ALL)
+    for i in range(len(extra)):
+        print(str(i+5)+".%s" %(extra[i]))
+        upperBound=i+5
+        #print("upperBound",upperBound)
+
+
     sys.stdout.write("Write the number before the file you want to slect: ")
 
     while True:
@@ -322,7 +336,12 @@ def Decode(OwnAsc):
             print(Style.RESET_ALL)
             Clear()
             return
-        elif(FileSlected>4 or FileSlected<1):
+        elif(FileSlected<=upperBound and FileSlected>4):
+            #print("ran")
+            imgDecode=Image.open(extra[FileSlected-5])
+            break
+
+        elif(FileSlected>upperBound or FileSlected<1):
             Clear()
             print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
             Slect()
