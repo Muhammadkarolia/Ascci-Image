@@ -7,7 +7,14 @@ from random import randint
 from functools import lru_cache
 
 Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
-Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN+"\n4.Return to Home",Style.RESET_ALL)
+#Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN+"\n4.Return to Home",Style.RESET_ALL)
+
+def Slect(extra):
+    print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
+    for i in range(len(extra)):
+        print(Fore.YELLOW+str(i+4)+".%s" %(extra[i]))
+        FinalI=i
+    print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
 
 OwnAsc={
     "q": 10,
@@ -145,7 +152,7 @@ def Read(string):
     return paf
 
 
-def FileSlect(fileTopen, path):
+def FileSlect(fileTopen, path, extra):
 #    print("itrannnnnnnn")
  #   print("FileTopen",fileTopen)
   #  print("path",path)
@@ -179,7 +186,7 @@ def FileSlect(fileTopen, path):
         path=Read(fileTopen)
         if(path=="BaseFile"):
             Clear()
-            Slect()
+            Slect(extra)
             sys.stdout.write("Write the number of your option --> ")
             path="BaseFile"
             return path
@@ -197,14 +204,14 @@ def FileSlect(fileTopen, path):
             print(Style.RESET_ALL+"This folder is empty")
             #print(fileTopen)
             path=fileTopen
-            FileSlect(path,path)
+            FileSlect(path,path, extra)
             return path
             
 
         elif(len(os.listdir(path))>0):
             #isitEmpty=False
             Clear()
-            path=FileSlect(path, path)
+            path=FileSlect(path, path, extra)
             return path
 
     elif(os.path.isfile(path)==True):
@@ -215,7 +222,7 @@ def FileSlect(fileTopen, path):
             input("press any key to continue")
             path=Read(path)
             Clear()
-            FileSlect(fileTopen, path)
+            FileSlect(fileTopen, path, extra)
             return path
         else:
             return path 
@@ -260,11 +267,14 @@ def Decode(OwnAsc):
 
     #Welcome to the decoding side. 
     print(Fore.MAGENTA+"Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
-    print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN +"\n4.Return to Home",Style.RESET_ALL)
+    print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
     for i in range(len(extra)):
-        print(str(i+5)+".%s" %(extra[i]))
-        upperBound=i+5
+        print(Fore.YELLOW+str(i+4)+".%s" %(extra[i]))
+        FinalI=i
+        upperBound=i+4
         #print("upperBound",upperBound)
+    print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+    
 
 
     sys.stdout.write("Write the number before the file you want to slect: ")
@@ -288,11 +298,11 @@ def Decode(OwnAsc):
                 print("There is noething in this file")
                 input("Press any key to countiue")
                 Clear()
-                Slect()
+                Slect(extra)
                 sys.stdout.write("Write the number before the file you want to slect: ")
 
             else:
-                path=FileSlect("AppFiles", path)
+                path=FileSlect("AppFiles", path, extra)
                 if(path!="BaseFile"):
                     imgDecode=Image.open(path) 
                     break
@@ -306,11 +316,11 @@ def Decode(OwnAsc):
                 print("There is noething in this file")
                 input("Press any key to countiue")
                 Clear()
-                Slect()
+                Slect(extra)
                 sys.stdout.write("Write the number before the file you want to slect: ")
 
             else:
-                path=FileSlect("DragTheImageToDecodeHear", path)
+                path=FileSlect("DragTheImageToDecodeHear", path, extra)
                 if(path!="BaseFile"):
                     imgDecode=Image.open(path) 
                     break
@@ -323,28 +333,28 @@ def Decode(OwnAsc):
                 print("There is noething in this file")
                 input("Press any key to countiue")
                 Clear()
-                Slect()
+                Slect(extra)
                 sys.stdout.write("Write the number before the file you want to slect: ")
 
             else:
                 
-                path=FileSlect("Encoded Image", path)
+                path=FileSlect("Encoded Image", path, extra)
                 if(path!="BaseFile"):
                     imgDecode=Image.open(path) 
                     break
-        elif(FileSlected==4):
+        elif(FileSlected==FinalI+5):
             print(Style.RESET_ALL)
             Clear()
             return
-        elif(FileSlected<=upperBound and FileSlected>4):
+        elif(FileSlected<=upperBound and FileSlected>3):
             #print("ran")
-            imgDecode=Image.open(extra[FileSlected-5])
+            imgDecode=Image.open(extra[FileSlected-4])
             break
 
         elif(FileSlected>upperBound or FileSlected<1):
             Clear()
             print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
-            Slect()
+            Slect(extra)
             sys.stdout.write("Please entre a number: ")
 
 
