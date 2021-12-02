@@ -609,11 +609,11 @@ while True:
     
     print(Style.RESET_ALL)
     if(inp==1):
+        Clear()
         Encode(OwnAsc)
-        Clear()
     elif(inp==2):
-        Decode(OwnAsc)
         Clear()
+        Decode(OwnAsc)
     elif(inp==3): 
         print("Genrating Key \\")
         sleep(0.25)
