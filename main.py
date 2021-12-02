@@ -589,19 +589,30 @@ def genrator(var ,passes):
             break
         passes=passes+1
 
-
+print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
+FirstPass=True
 
 while True:
-    print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Style.RESET_ALL)
+    if(FirstPass==False):
+        print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.ORANGE,"\n4.Quit",Style.RESET_ALL)
+    FirstPass==False
     sys.stdout.write("Type the number hear: ")
-    inp=input(Fore.MAGENTA) # try to see if number and other exsceptions
+    while True:
+        try:
+            inp=int(input(Fore.MAGENTA)) # try to see if number and other exsceptions
+            break
+        except Exception as err:
+            if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
+                print(Fore.RED)
+                sys.stdout.write("please entre a number: ")
+    
     print(Style.RESET_ALL)
     Clear()
-    if(inp=="1"):
+    if(inp==1):
         Encode(OwnAsc)
-    elif(inp=="2"):
+    elif(inp==2):
         Decode(OwnAsc)
-    elif(inp=="3"): 
+    elif(inp==3): 
         print("Genrating Key \\")
         sleep(0.25)
         Clear()
@@ -649,3 +660,9 @@ while True:
             for i in range(len(ListLock)-1):
                 file.write(ListLock[i])
             file.close()
+    elif(inp==4):
+        quit()
+    else:
+        print("number out of range Please try agin")
+        sleep(2.5)
+        Clear()
