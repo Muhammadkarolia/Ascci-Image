@@ -1,12 +1,23 @@
-from PIL import Image
 import os
 import sys
+from PIL import Image
 from colorama import Fore, Style 
 from time import sleep
 from random import randint
-
+from functools import lru_cache
 
 Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
+#Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN+"\n4.Return to Home",Style.RESET_ALL)
+
+def Slect(extra):
+    print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
+    for i in range(len(extra)):
+        print(Fore.YELLOW+str(i+4)+".%s" %(extra[i]))
+        FinalI=i
+    try:
+        print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+    except:
+        print(Fore.GREEN+"%d.Return to Home" %(4)+Style.RESET_ALL)
 
 OwnAsc={
     "q": 10,
@@ -100,18 +111,134 @@ OwnAsc={
     "M": 90,
 }
 
+
+
+@lru_cache(maxsize=50)
+def Read(string):
+    #print(string, type(string))
+    stringSplit=string.split("/")
+    if(len(stringSplit)==1):
+        return "BaseFile"
+
+    listt=[]
+    items=0 
+    WhatRemove=list()
+    #print("string=",string)
+    for i in range(len(string)):
+        listt.append(string[i])
+    #print(listt)
+    for i in range(len(listt)):
+        if(listt[i]=="/"):
+            items=i
+    #print(listt)     
+         
+    for i in range(items, len(listt)):
+        #WhatRemove=WhatRemove+listt[i]
+        WhatRemove.append(i)
+        #print(WhatRemove)
+    #print(listt)
+    for i in range(len(WhatRemove)):
+        listt[WhatRemove[i]]="@plz]#;efeq1234567890poiuytrdcvbn"
+
+    #print(listt)
+    for i in range(len(listt)):
+        try:
+            listt.remove("@plz]#;efeq1234567890poiuytrdcvbn")
+        except:
+            pass
+    #print(listt)
+    paf=""
+    for i in range(len(listt)):
+        paf=paf+listt[i] 
+        #print(listt[i])
+        #print("paf="+paf)
+    return paf
+
+
+def FileSlect(fileTopen, path, extra):
+#    print("itrannnnnnnn")
+ #   print("FileTopen",fileTopen)
+  #  print("path",path)
+   # sleep(2)
+    path=fileTopen+"/"
+    print(Fore.LIGHTBLUE_EX+path)
+    path=str()
+    FilesInslected=os.listdir(fileTopen)
+    #print(FilesInslected)
+
+    for i in range(len(FilesInslected)):
+        if(os.path.isfile(fileTopen+"/"+FilesInslected[i])==True):
+            print(Fore.YELLOW+str(i+1)+"."+FilesInslected[i]+Style.RESET_ALL)
+
+        elif(os.path.isdir(fileTopen+"/"+FilesInslected[i])==True):
+            print(Fore.RED+str(i+1)+"."+FilesInslected[i]+Style.RESET_ALL)
+        iii=i
+    print(Style.RESET_ALL+str(iii+2)+".Go back")
+    sys.stdout.write("Write the number of the option --> ")
+    while True:
+        try:
+            FileSlected=int(input(Fore.MAGENTA))
+            break
+        except Exception as err: 
+            if(str(err)[0:len("invalid literal for int() with base 10:")]==""):
+                print(Fore.RED)
+                sys.stdout.write("Please entre a number:")
+    #print("pppp",path)
+
+    if(FileSlected==iii+2):
+        path=Read(fileTopen)
+        if(path=="BaseFile"):
+            Clear()
+            Slect(extra)
+            sys.stdout.write("Write the number of your option --> ")
+            path="BaseFile"
+            return path
+        #print(Fore.WHITE,path)
+    
+    elif(FileSlected<iii+3 or FileSlected>1):
+        #path=Read(path)
+        FileSel=FilesInslected[FileSlected-1]
+        path=fileTopen+"/"+FileSel    
+
+    if(os.path.isdir(path)==True):
+        if(len(os.listdir(path))==0):
+            Clear()
+            #isitEmpty=True
+            print(Style.RESET_ALL+"This folder is empty")
+            #print(fileTopen)
+            path=fileTopen
+            FileSlect(path,path, extra)
+            return path
+            
+
+        elif(len(os.listdir(path))>0):
+            #isitEmpty=False
+            Clear()
+            path=FileSlect(path, path, extra)
+            return path
+
+    elif(os.path.isfile(path)==True):
+        #print(path)
+        name, ext = os.path.splitext(path)
+        if(ext!=".png"):
+            print(Style.RESET_ALL+"This is not a png file")
+            input("press any key to continue")
+            path=Read(path)
+            Clear()
+            FileSlect(fileTopen, path, extra)
+            return path
+        else:
+            return path 
+
 def Decode(OwnAsc):
-    file=open("messages/msg.txt", "w")
-    print("do you have your own image name are do you want to open the the defealt decoding image?\n",Fore.RED,"1. I have my own\n",Fore.CYAN,"2.I am using the \"YourEncodedImage\" file ",Style.RESET_ALL)
-    sys.stdout.write("Wrtie your anwser hear -->")
+    file=open("MeassageResived.txt", "w")
 
-
-    file=open("key.txt", "r") # opning the file #
+    file=open("AppFiles/key.txt", "r") # opning the file #
     arr=[] # declaring array to house the things
 
     # Itrates trough each item in file
     LinesInFile=""
-    for line in open("key.txt").readlines(): 
+    for line in open("AppFiles/key.txt").readlines(): 
         LinesInFile=LinesInFile+line
         #print("lines in ", LinesInFile)
 
@@ -122,6 +249,7 @@ def Decode(OwnAsc):
     # Goes through the arry and removes \n
     for i in range(len(arr)):
         # try to remove the chater
+        
         try:
             arr.remove("\n")
         #if the charter is not there then break the loop
@@ -130,49 +258,118 @@ def Decode(OwnAsc):
                 break
                 
     file.close()
+
+    extra=list()
+    FileInBase=os.listdir()
+    for i in range(len(FileInBase)):
+        if(os.path.isfile(FileInBase[i])==True):
+            f, ext=os.path.splitext(FileInBase[i])
+            if(ext==".png"):
+                extra.append(FileInBase[i])
+
+
+    #Welcome to the decoding side. 
+    print(Fore.MAGENTA+"Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
+    print(Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
+    for i in range(len(extra)):
+        print(Fore.YELLOW+str(i+4)+".%s" %(extra[i]))
+        FinalI=i
+        upperBound=i+4
+        #print("upperBound",upperBound) 
+    try:
+        FinalI+1
     
+    except Exception as err:
+        if(str(err)[0:len("local variable 'FinalI' referenced before assignment")]=="local variable 'FinalI' referenced before assignment"):
+            FinalI=-1
+            upperBound=4
+    try:
+        print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+    except:
+        print(Fore.GREEN+"%d.Return to Home" %(4)+Style.RESET_ALL)
 
-    #kepp doing until brokcen
+
+    sys.stdout.write("Write the number before the file you want to slect: ")
+
     while True:
-        try:
-            inpSt=int(input(Fore.MAGENTA)) # user input
-            if(inpSt==1): # DO MORE HEAR
-                try:
-                    Clear()
-                    print(Style.RESET_ALL,"what File do you want to open: ") 
-                    sys.stdout.write("Dont forget to put the folder before the file name. E.g images/image.png")
-                    FileOpen=str(input(Fore.MAGENTA))
-
-                except Exception as errr:
-                    print(errr) # Handle exception better
-
-            elif(inpSt==2):
-                Style.RESET_ALL
-                FileOpen="images/YourEncodedImage.png"
-            
-            elif(inpSt!=1 or inpSt!=2): # Rasie exception on purpose
-                2+None    
-
-            imgDecode=Image.open(FileOpen) 
-            break # no errors so break 
+        while True:
+            try:
+                FileSlected=int(input(Fore.MAGENTA))
+                break
+            except Exception as err:
+                if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
+                    print(Fore.RED)
+                    sys.stdout.write("Please entre a number: ")
 
 
-        except Exception as err: # Ther is error
+        if(FileSlected==1):
+            Clear()
+            path=str()
+            if(len(os.listdir("AppFiles"))==0):
+                print(Fore.LIGHTBLUE_EX+"AppFiles/"+Style.RESET_ALL)
+                print("There is noething in this file")
+                input("Press any key to countiue")
+                Clear()
+                Slect(extra)
+                sys.stdout.write("Write the number before the file you want to slect: ")
 
-            if(str(err)[0:39]=="invalid literal for int() with base 10:"): # if they no enter number
-                print(Style.RESET_ALL,"Please enter a number")
-                sys.stdout.write("Wrtie your awnser hear:\t")
-
-            elif(str(err)[0:55]=="unsupported operand type(s) for +: 'int' and 'NoneType'"): # if they enter number that is not valied
-                print(Style.RESET_ALL,"Please enter a number bewteen 1 and 2")
-                sys.stdout.write("Wrtie your awnser hear:\t")
             else:
-                print(err) # unkown err occared
-            
+                path=FileSlect("AppFiles", path, extra)
+                if(path!="BaseFile"):
+                    imgDecode=Image.open(path) 
+                    break
+
+        elif(FileSlected==2):
+            Clear()
+            path=str()
+
+            if(len(os.listdir("DragTheImageToDecodeHear"))==0):
+                print(Fore.LIGHTBLUE_EX+"DragTheImageToDecodeHear/"+Style.RESET_ALL)
+                print("There is noething in this file")
+                input("Press any key to countiue")
+                Clear()
+                Slect(extra)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+
+            else:
+                path=FileSlect("DragTheImageToDecodeHear", path, extra)
+                if(path!="BaseFile"):
+                    imgDecode=Image.open(path) 
+                    break
+
+        elif(FileSlected==3):
+            Clear()
+            path=str()
+            if(len(os.listdir("Encoded Image"))==0):
+                print(Fore.LIGHTBLUE_EX+"Encoded Image/"+Style.RESET_ALL)
+                print("There is noething in this file")
+                input("Press any key to countiue")
+                Clear()
+                Slect(extra)
+                sys.stdout.write("Write the number before the file you want to slect: ")
+
+            else:
+                
+                path=FileSlect("Encoded Image", path, extra)
+                if(path!="BaseFile"):
+                    imgDecode=Image.open(path) 
+                    break
+
+        elif(FileSlected>upperBound or FileSlected<1):
+            Clear()
+            print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
+            Slect(extra)
+            sys.stdout.write("Please entre a number: ")
+        elif(FileSlected==FinalI+5):
+            print(Style.RESET_ALL)
+            Clear()
+            return
+        elif(FileSlected<=upperBound and FileSlected>3):
+            #print("ran")
+            imgDecode=Image.open(extra[FileSlected-4])
+            break
 
 
-            #print(Style.RESET_ALL, "\n",error)
-            #Send email of err
 
     width, hight = imgDecode.size[0], imgDecode.size[1] # get highet and width of image
     RGBvalD=imgDecode.convert("RGBA") #  convert to RGBA
@@ -181,7 +378,6 @@ def Decode(OwnAsc):
     #n=0
     msg=[] # this will open the array which will hold the measge
     
-
 
 
 
@@ -214,14 +410,14 @@ def Decode(OwnAsc):
 
     print(Style.RESET_ALL)
 
-    file=open("messages/msg.txt", "w")
+    file=open("MeassageResived.txt", "w")
     #write the msg to file
     for i in range(len(msg)):
         #print(i)
         file.write(msg[i])
         if(i==len(msg)):
             file.close()
-            file=open("messages/msg.txt", "r")
+            file=open("MeassageResived.txt", "r")
             break
     Clear()
 
@@ -231,7 +427,7 @@ def Decode(OwnAsc):
         sys.stdout.write(msg[_])
     print(Style.RESET_ALL,"\n\n-------------------------------",Fore.RED)
     file.close()
-    print("This msg is stored in the messages folder, in the msg.txt file.",Style.RESET_ALL)
+    print("This msg is stored in the messages folder, in the MeassageResivedfile.",Style.RESET_ALL)
     input("Press any key to countiue\t")
     print(Style.RESET_ALL,"Returning to menu")
     IdontKnowWhatToCallThisVar=randint(0,1)
@@ -250,19 +446,23 @@ def Decode(OwnAsc):
 
 def Encode(OwnAsc):
     # Image # 
-    img = Image.open("images/DontDelThisFile.png") # Opnning up the image #
+    img = Image.open("AppFiles/DontDelThisFile.png") # Opnning up the image #
     width, hight = img.size[0], img.size[1]
-    img1 = Image.open("images/DontDelThisFile.png")
+    img1 = Image.open("AppFiles/DontDelThisFile.png")
 
     #Inputing msg
-    msg = input("Enter MSG: ") # Getting msg input #
+    while True:
+        msg = input("Enter MSG: ") # Getting msg input #
+        if(len(msg)==0):
+            print(Fore.RED+"Please type something",Style.RESET_ALL)
+        else:
+            break
 
-    
-    file=open("key.txt", "r")
+    file=open("AppFiles/key.txt", "r")
     arr=[] 
 
     LinesInFile=""
-    for line in open("key.txt").readlines(): 
+    for line in open("AppFiles/key.txt").readlines(): 
         LinesInFile=LinesInFile+line
 
     for i in range(0,len(LinesInFile)):
@@ -305,6 +505,10 @@ def Encode(OwnAsc):
         l=F
     elif(F==0 and M>0):
         l=1
+    elif(F==0 and M==0):
+        print("please enter somwthing\nRETURNING TO MENUE")
+        Clear()
+        return
     
 
     i=0
@@ -357,7 +561,7 @@ def Encode(OwnAsc):
 
 
     #save the img
-    img1.save("images/YourEncodedImage.png")
+    img1.save("Encoded Image/Encoded Image.png")
     Clear()
 
 abc="asdfghjklzxcvbnmqwertyuiop"
@@ -385,21 +589,34 @@ def genrator(var ,passes):
             break
         passes=passes+1
 
+print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
+FirstPass=True
 
 while True:
-    print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Style.RESET_ALL)
+    if(FirstPass==False):
+        print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
+    FirstPass=False
     sys.stdout.write("Type the number hear: ")
-    inp=input(Fore.MAGENTA) # try to see if number and other exsceptions
+    while True:
+        try:
+            inp=int(input(Fore.MAGENTA)) # try to see if number and other exsceptions
+            break
+        except Exception as err:
+            Clear()
+            if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
+                print(Fore.RED)
+                sys.stdout.write("please entre a number: ")
+    
     print(Style.RESET_ALL)
-    Clear()
-    if(inp=="1"):
+    if(inp==1):
         Encode(OwnAsc)
-    elif(inp=="2"):
+        Clear()
+    elif(inp==2):
         Decode(OwnAsc)
-    elif(inp=="3"): 
+        Clear()
+    elif(inp==3): 
         print("Genrating Key \\")
         sleep(0.25)
-        Clear()
         Clear()
         print("Genrating Key /")
         sleep(0.25)
@@ -440,15 +657,13 @@ while True:
                 genrator(abcap, passAcap)
              
             ListLock=list(lock)
-            file=open("key.txt", "w")
+            file=open("AppFiles/key.txt", "w")
             for i in range(len(ListLock)-1):
                 file.write(ListLock[i])
             file.close()
-            
-    """else:
-        img=Image.open("images/YourEncodedImage.png")
-        R=img.convert("RGBA")
-        for i in range(100):
-            print(img.getpixel((i,0)))
+    elif(inp==4):
         quit()
-"""#Incase i wnat to
+    else:
+        print("number out of range Please try agin")
+        sleep(1.5)
+        Clear()
