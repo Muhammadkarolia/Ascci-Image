@@ -592,10 +592,6 @@ def genrator(var ,passes):
 print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
 FirstPass=True
 
-file=open(".breakpoints","r")
-for lines in file:
-    print(lines)
-
 while True:
     if(FirstPass==False):
         print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.ORANGE,"\n4.Quit",Style.RESET_ALL)
