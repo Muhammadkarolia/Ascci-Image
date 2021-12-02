@@ -594,28 +594,29 @@ FirstPass=True
 
 while True:
     if(FirstPass==False):
-        print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.ORANGE,"\n4.Quit",Style.RESET_ALL)
-    FirstPass==False
+        print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
+    FirstPass=False
     sys.stdout.write("Type the number hear: ")
     while True:
         try:
             inp=int(input(Fore.MAGENTA)) # try to see if number and other exsceptions
             break
         except Exception as err:
+            Clear()
             if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
                 print(Fore.RED)
                 sys.stdout.write("please entre a number: ")
     
     print(Style.RESET_ALL)
-    Clear()
     if(inp==1):
         Encode(OwnAsc)
+        Clear()
     elif(inp==2):
         Decode(OwnAsc)
+        Clear()
     elif(inp==3): 
         print("Genrating Key \\")
         sleep(0.25)
-        Clear()
         Clear()
         print("Genrating Key /")
         sleep(0.25)
@@ -664,5 +665,5 @@ while True:
         quit()
     else:
         print("number out of range Please try agin")
-        sleep(2.5)
+        sleep(1.5)
         Clear()
