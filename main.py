@@ -14,7 +14,10 @@ def Slect(extra):
     for i in range(len(extra)):
         print(Fore.YELLOW+str(i+4)+".%s" %(extra[i]))
         FinalI=i
-    print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+    try:
+        print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+    except:
+        print(Fore.GREEN+"%d.Return to Home" %(4)+Style.RESET_ALL)
 
 OwnAsc={
     "q": 10,
@@ -272,9 +275,18 @@ def Decode(OwnAsc):
         print(Fore.YELLOW+str(i+4)+".%s" %(extra[i]))
         FinalI=i
         upperBound=i+4
-        #print("upperBound",upperBound)
-    print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+        #print("upperBound",upperBound) 
+    try:
+        FinalI+1
     
+    except Exception as err:
+        if(str(err)[0:len("local variable 'FinalI' referenced before assignment")]=="local variable 'FinalI' referenced before assignment"):
+            FinalI=-1
+            upperBound=4
+    try:
+        print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
+    except:
+        print(Fore.GREEN+"%d.Return to Home" %(4)+Style.RESET_ALL)
 
 
     sys.stdout.write("Write the number before the file you want to slect: ")
@@ -342,6 +354,12 @@ def Decode(OwnAsc):
                 if(path!="BaseFile"):
                     imgDecode=Image.open(path) 
                     break
+
+        elif(FileSlected>upperBound or FileSlected<1):
+            Clear()
+            print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
+            Slect(extra)
+            sys.stdout.write("Please entre a number: ")
         elif(FileSlected==FinalI+5):
             print(Style.RESET_ALL)
             Clear()
@@ -350,12 +368,6 @@ def Decode(OwnAsc):
             #print("ran")
             imgDecode=Image.open(extra[FileSlected-4])
             break
-
-        elif(FileSlected>upperBound or FileSlected<1):
-            Clear()
-            print("Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
-            Slect(extra)
-            sys.stdout.write("Please entre a number: ")
 
 
 
