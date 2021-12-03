@@ -1,5 +1,20 @@
 {
-
-  "files": {}
-
+  "files": {
+    "AppFiles/key.txt": [
+      {
+        "id": "5ae95088-02f2-4808-93ba-f47e81fa4664",
+        "line": 1,
+        "version": 12,
+        "index": 0
+      }
+    ],
+    "main.py": [
+      {
+        "id": "ad7d8dda-5be0-43b0-9400-e6911dea50b4",
+        "line": 681,
+        "version": 33784,
+        "index": 19549
+      }
+    ]
+  }
 }

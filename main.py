@@ -592,6 +592,8 @@ def genrator(var ,passes):
 print("Welcome to the",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
 FirstPass=True
 
+#print(len("JrytK]'i3-)P{l*UwDL#NHnkQh5jg£~84d@BAE[c$Ye(.o=%>uI&TVR}C6Wz0v+m7F2:Ss/_qO9XM!1Z"))
+
 while True:
     if(FirstPass==False):
         print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
@@ -632,33 +634,43 @@ while True:
                 sleep(0.25)
                 Clear()
 
-        passA=0
-        passAcap=0
-        passN=0
-        passS=0
-        lock=set()
         # Generator #
-        for i in range(100):
-            rand=randint(0,16)
-            #alfbet
-            if(rand>5 and rand<10 and passA!=len(abc)-1): # 6,7,8,9
-                genrator(abc,passA)
+        for y in range(100):
+            passA=0
+            passAcap=0
+            passN=0
+            passS=0
+            lock=set()
+            for x in range(99):
+                rand=randint(0,16)
+                #alfbet
+                if(rand>5 and rand<10 and passA!=len(abc)-1): # 6,7,8,9
+                    genrator(abc,passA)
 
-            #numbers
-            elif(rand<5 and rand>0 and passN!=len(numbers)-1 ): # 4,3,2,1
-                genrator(numbers,passN)
+                #numbers
+                elif(rand<5 and rand>0 and passN!=len(numbers)-1 ): # 4,3,2,1
+                    genrator(numbers,passN)
 
-            #symbols
-            elif( rand==5 or rand==10 or rand==0 or rand==11 and passS!=len(sym)-1): # 0, 5, 10, 11
-                genrator(sym,passS,)
+                #symbols
+                elif( rand==5 or rand==10 or rand==0 or rand==11 and passS!=len(sym)-1): # 0, 5, 10, 11
+                    genrator(sym,passS)
 
-            #caps
-            elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
-                genrator(abcap, passAcap)
-             
-            ListLock=list(lock)
-            file=open("AppFiles/key.txt", "w")
-            for i in range(len(ListLock)-1):
+                #caps
+                elif(rand>11 and passAcap!=len(abcap)-1): # 12, 13, 14, 15 , 16
+                    genrator(abcap, passAcap)
+                
+                ListLock=list(lock)  
+                if(x==98 and y!=99):
+                    #print("running")
+                    ListLock.append("\n")
+                    #print(ListLock)
+                if(y==0 and x==0):
+                    #print("y==0")
+                    file=open("AppFiles/key.txt", "w")
+                else:
+                    #print("y!=0")
+                    file=open("AppFiles/key.txt", "a")
+            for i in range(len(ListLock)):
                 file.write(ListLock[i])
             file.close()
     elif(inp==4):
