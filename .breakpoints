@@ -1,19 +1,17 @@
 {
   "files": {
-    "AppFiles/key.txt": [
-      {
-        "id": "5ae95088-02f2-4808-93ba-f47e81fa4664",
-        "line": 1,
-        "version": 12,
-        "index": 0
-      }
-    ],
     "main.py": [
       {
-        "id": "ad7d8dda-5be0-43b0-9400-e6911dea50b4",
-        "line": 681,
-        "version": 33784,
-        "index": 19549
+        "id": "80aaec1c-0bc4-4006-bea4-9e8e1d2ee1be",
+        "line": 544,
+        "version": 38405,
+        "index": 14616
+      },
+      {
+        "id": "2c2f2bda-fd0e-4913-92b8-6f54563341c3",
+        "line": 643,
+        "version": 38405,
+        "index": 18289
       }
     ]
   }
