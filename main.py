@@ -17,7 +17,7 @@ def Slect(extra):
     try:
         print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
     except:
-        print(Fore.GREEN+"%d.Return to Home" %(4)+Style.RESET_ALL)
+        print(Fore.GREEN+"4.Return to Home"+Style.RESET_ALL)
 
 OwnAsc={
     "q": 10,
@@ -52,7 +52,18 @@ OwnAsc={
     ",": 37,
     ".": 38,
     "/": 39,
-    
+
+    "4": 1,
+    "2": 2,
+    "9": 3,
+    "0": 4,
+    "1": 5,
+    "8": 6,
+    "7": 7,
+    "5": 8,
+    "3": 9,
+    "6": 0,
+
     "!": 40,
     "£": 41,
     "$": 42,
@@ -113,7 +124,7 @@ OwnAsc={
 
 
 
-@lru_cache(maxsize=50)
+@lru_cache(maxsize=50) 
 def Read(string):
     #print(string, type(string))
     stringSplit=string.split("/")
@@ -180,7 +191,7 @@ def FileSlect(fileTopen, path, extra):
             FileSlected=int(input(Fore.MAGENTA))
             break
         except Exception as err: 
-            if(str(err)[0:len("invalid literal for int() with base 10:")]==""):
+            if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
                 print(Fore.RED)
                 sys.stdout.write("Please entre a number:")
     #print("pppp",path)
@@ -234,30 +245,22 @@ def Decode(OwnAsc):
     file=open("MeassageResived.txt", "w")
 
     file=open("AppFiles/key.txt", "r") # opning the file #
-    arr=[] # declaring array to house the things
+    arr=[] # declaring array to house the items in file
 
     # Itrates trough each item in file
-    LinesInFile=""
-    for line in open("AppFiles/key.txt").readlines(): 
-        LinesInFile=LinesInFile+line
-        #print("lines in ", LinesInFile)
+    LinesInFile=[]
+    for lines in file.readlines():
+        for i in range(len(lines)):
+            LinesInFile.append(lines[i])
+    print(LinesInFile)
 
     # goes through the string charter by charter and adds it to the arry
-    for i in range(0,len(LinesInFile)):
-        arr.append(LinesInFile[i])
+    #for i in range(0,len(LinesInFile)):
+    arr=LinesInFile
 
-    # Goes through the arry and removes \n
-    for i in range(len(arr)):
-        # try to remove the chater
-        
-        try:
-            arr.remove("\n")
-        #if the charter is not there then break the loop
-        except Exception as err:
-            if(str(err)[0:29]=="list.remove(x): x not in list"):
-                break
-                
     file.close()
+    print(arr)
+    input()
 
     extra=list()
     FileInBase=os.listdir()
@@ -369,45 +372,61 @@ def Decode(OwnAsc):
             imgDecode=Image.open(extra[FileSlected-4])
             break
 
+    # Finding the ammount of pixels in the image which have a Alpah value of 0
+    # This is becouase them pixels have leters enocded in them
+    # Whith the ammount of pixeks stored in a varible i know how many times to itrate through the for loop
+    width, hight = imgDecode.size[0], imgDecode.size[1]
+    RGBvalDA=imgDecode.convert("RGBA") #  convert to RGBA
+    ranage=0
+    for y in range(hight):
+        for x in range(width):
+            r,g,b,a=RGBvalDA.getpixel((x,y))
+            if(a==0):
+                ranage+=1
+    print("ranage",ranage)
+    input()
 
-
-    width, hight = imgDecode.size[0], imgDecode.size[1] # get highet and width of image
-    RGBvalD=imgDecode.convert("RGBA") #  convert to RGBA
+    RGBvalD=imgDecode.convert("RGB") #  convert to RGB
 
     #m=0
     #n=0
     msg=[] # this will open the array which will hold the measge
     
 
-
-
-    x=0
     y=0
-
     i = 0
-    for y in range(hight):
-        for x in range(width):
-            r,g,b,aB=RGBvalD.getpixel((x,y))
-            if(aB!=255): # if old code is used agin then this shold be if(n!=m):
-                if(arr[i]!="1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "0"):
-                    for key in OwnAsc:
-                        if(arr[i] in OwnAsc.keys()):
-                            xx=int(OwnAsc[arr[i]])
-                            #print("xx = ", xx)
-                        else:
-                            xx=int(arr[i])
-                            #print("xx when norm=",xx)
-                # and hear sould be n=n+1
-                r,g,b,a=RGBvalD.getpixel((xx,y))
-                chrR=chr(r)
-                chrG=chr(g)
-                chrB=chr(b)
-                
-                msg.append(chrR)
-                msg.append(chrG)
-                msg.append(chrB) 
-                i=i+1
+    index=0
+    isn=False
+    print(arr)
+    while(i!=ranage):
+        print("i",i)
+        for keys in OwnAsc:
+            if(arr[index] in OwnAsc.keys()): # needs a specfix index not i
+                print("arr",arr[index])
+                xx=OwnAsc[arr[index]]
+                print("xx",xx)
+                isn=False
+                break
+            elif(arr[index]=="\n"):
+                y+=1
+                print("y+=1",y)
+                isn=True
+                break
+        if(isn==False):
+            r,g,b = RGBvalD.getpixel((xx,y))
+            chrR=chr(r)
+            chrG=chr(g)
+            chrB=chr(b)
+            msg.append(chrR)
+            msg.append(chrG)
+            msg.append(chrB)
+            print("msg at pass %s" %(str(i)), msg)
+            i+=1
+        input()
+        index+=1
 
+
+    #print(arr.index("8212"))
     print(Style.RESET_ALL)
 
     file=open("MeassageResived.txt", "w")
@@ -456,40 +475,41 @@ def Encode(OwnAsc):
         if(len(msg)==0):
             print(Fore.RED+"Please type something",Style.RESET_ALL)
         else:
+            print(msg)
+            input()
             break
 
     file=open("AppFiles/key.txt", "r")
     arr=[] 
 
-    LinesInFile=""
-    for line in open("AppFiles/key.txt").readlines(): 
-        LinesInFile=LinesInFile+line
+    LinesInFile=[]
+    for lines in file.readlines():
+        for i in range(len(lines)):
+            LinesInFile.append(lines[i])
 
     for i in range(0,len(LinesInFile)):
         arr.append(LinesInFile[i])
 
-    for i in range(len(arr)):
+    print(arr)
+    """for i in range(len(arr)):
 
         try:
             arr.remove("\n")
         except Exception as err:
             if(str(err)[0:29]=="list.remove(x): x not in list"):
-                break
+                break"""
     file.close()
 
     x=0 # x #
     y=0 # y #
 
     msgAsci=[] # Arry making # 
-    for x in range ((width*hight)-2):
-        msgAsci.append(0)
 
-    x=0
-    y=0
-    q=0
-    while(q!=len(msg)):
-        msgAsci.insert(q, ord(msg[q]) )
-        q=q+1
+    for q in range(len(msg)):
+        msgAsci.append(ord(msg[q]))
+    print(msgAsci)
+
+    #print(msg)
     n=0
 
 
@@ -510,43 +530,70 @@ def Encode(OwnAsc):
         Clear()
         return
     
-
+    print(l)
+    l+=1
+    input()
     i=0
+    addY=0
+    Broc=False
     for y in range(hight):
             for x in range(width):
                 if(n!=l):
                     #print("n ",n)
-                    #print("i ",i)
-                    r=msgAsci[3*n]
-                    g=msgAsci[(3*n)+1]
-                    b=msgAsci[(3*n)+2]
-                    if(x==width):
-                        x=0
-                        y=y+1
-            
-                    elif(y==hight and x==width):
+                    #print("i ",i)#
+                    try:
+                        print(msgAsci)
+                        r=msgAsci[3*n]
+                        print(r, "3*n", str(3*n))
+                        g=msgAsci[(3*n)+1]
+                        print(g,"(3*n)+1", str((3*n)+1))
+                        b=msgAsci[(3*n)+2]
+                        print(b, "(3*n)+2",str((3*n)+2))
+                        input()
+                    except:
+                        break
+                    if(y==hight and x==width):
                         print("MSG can not be fittied in this img")
 
                         #quit() Do somwthing hear
                     
                     try:
 
-
-                        if(arr[i]!="1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "0"):
-                            for key in OwnAsc:
+                        print("I",i, "ARR I ",arr[i])
+                        for key in OwnAsc:
                                 
-                                if(arr[i] in OwnAsc.keys()):
-                                    xx=int(OwnAsc[arr[i]])
-                                    #print("xx = ", xx)
-                                else:
-                                    xx=int(arr[i])
+                            if(arr[i] in OwnAsc.keys()):
+                                print("arr[i]",arr[i])
+                                print(OwnAsc[arr[i]], "OwnAsc[arr[i]]")
+                                xx=int(OwnAsc[arr[i]])
+                                print("xx",xx)
+                                break
+                                #print("xx = ", xx)
+                            elif(arr[i]=="\n"):
+                                print("arr[i] whith \\n",arr[i])
+                                print("xx Whith \\n",xx)
+                                addY+=1
+                                Broc=True
+                                break 
+                        else:
+                            print("Else")
+                            xx=int(arr[i])
 
-                        img1.putpixel((xx,y), (r,g,b,0) )
+                        print(type(arr[i]), arr[i])
+                        if(Broc==False):
+                            try:
+                                print("ran")
+                                print("x is", xx, "y is",y+addY)
+                                img1.putpixel((xx,y+addY), (r,g,b,0) )
+                                n+=1
+                            except Exception as err:
+                                print("ERR",err)
+                        Broc=False
                         #print(img.getpixel((int(arr[i]),y)))
                         #print("arr spit ", arr[i])
 
                     except Exception as err: 
-
+                        print(Fore.RED,err)
                         if(str(err)[0:23]=="list index out of range"):
                             pass
                             #add items to key
@@ -556,18 +603,17 @@ def Encode(OwnAsc):
 
                    
                     #print(msgAsci)
-                    n=n+1
-                    i=i+1
-
+                    i+=1
+                    input()
 
     #save the img
     img1.save("Encoded Image/Encoded Image.png")
     Clear()
 
-abc="asdfghjklzxcvbnmqwertyuiop"
-abcap="QWERTYUIOPASDFGHJKLZXCVBNM"
-numbers="1234567890"
-sym="!£$%^&*()_+{}:@~?><,./;'#[]-="
+abc="asdfghjklzxcvbnmqwertyuiop" 
+abcap="QWERTYUIOPASDFGHJKLZXCVBNM" 
+numbers="1234567890" 
+sym="!£$%^&*()_+{}:@~?><,./;'#[]-=" 
 
 
 def check(var, randGEN, lock):
@@ -606,8 +652,9 @@ while True:
         except Exception as err:
             Clear()
             if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
-                print(Fore.RED)
+                print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL+Fore.RED)
                 sys.stdout.write("please entre a number: ")
+
     
     print(Style.RESET_ALL)
     if(inp==1):
