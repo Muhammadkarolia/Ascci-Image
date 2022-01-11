@@ -263,15 +263,12 @@ def Decode(OwnAsc):
     for lines in file.readlines():
         for i in range(len(lines)):
             LinesInFile.append(lines[i])
-    print(LinesInFile)
 
     # goes through the string charter by charter and adds it to the arry
     #for i in range(0,len(LinesInFile)):
     arr=LinesInFile
 
     file.close()
-    print(arr)
-    input()
 
     extra=list()
     FileInBase=os.listdir()
@@ -394,8 +391,7 @@ def Decode(OwnAsc):
             r,g,b,a=RGBvalDA.getpixel((x,y))
             if(a==0):
                 ranage+=1
-    print("ranage",ranage)
-    input()
+
 
     RGBvalD=imgDecode.convert("RGB") #  convert to RGB
 
@@ -408,19 +404,14 @@ def Decode(OwnAsc):
     i = 0
     index=0
     isn=False
-    print(arr)
     while(i!=ranage):
-        print("i",i)
         for keys in OwnAsc:
             if(arr[index] in OwnAsc.keys()): # needs a specfix index not i
-                print("arr",arr[index])
                 xx=OwnAsc[arr[index]]
-                print("xx",xx)
                 isn=False
                 break
             elif(arr[index]=="\n"):
                 y+=1
-                print("y+=1",y)
                 isn=True
                 break
         if(isn==False):
@@ -431,9 +422,7 @@ def Decode(OwnAsc):
             msg.append(chrR)
             msg.append(chrG)
             msg.append(chrB)
-            print("msg at pass %s" %(str(i)), msg)
             i+=1
-        input()
         index+=1
 
 
@@ -486,8 +475,6 @@ def Encode(OwnAsc):
         if(len(msg)==0):
             print(Fore.RED+"Please type something",Style.RESET_ALL)
         else:
-            print(msg)
-            input()
             break
 
     file=open("AppFiles/key.txt", "r")
@@ -501,7 +488,6 @@ def Encode(OwnAsc):
     for i in range(0,len(LinesInFile)):
         arr.append(LinesInFile[i])
 
-    print(arr)
     """for i in range(len(arr)):
 
         try:
@@ -518,7 +504,6 @@ def Encode(OwnAsc):
 
     for q in range(len(msg)):
         msgAsci.append(ord(msg[q]))
-    print(msgAsci)
 
     #print(msg)
     n=0
@@ -541,9 +526,7 @@ def Encode(OwnAsc):
         Clear()
         return
     
-    print(l)
     l+=1
-    input()
     i=0
     addY=0
     Broc=False
@@ -553,14 +536,9 @@ def Encode(OwnAsc):
                     #print("n ",n)
                     #print("i ",i)#
                     try:
-                        print(msgAsci)
                         r=msgAsci[3*n]
-                        print(r, "3*n", str(3*n))
                         g=msgAsci[(3*n)+1]
-                        print(g,"(3*n)+1", str((3*n)+1))
                         b=msgAsci[(3*n)+2]
-                        print(b, "(3*n)+2",str((3*n)+2))
-                        input()
                     except:
                         break
                     if(y==hight and x==width):
@@ -569,36 +547,24 @@ def Encode(OwnAsc):
                         #quit() Do somwthing hear
                     
                     try:
-
-                        print("I",i, "ARR I ",arr[i])
                         for key in OwnAsc:
                                 
                             if(arr[i] in OwnAsc.keys()):
-                                print("arr[i]",arr[i])
-                                print(OwnAsc[arr[i]], "OwnAsc[arr[i]]")
                                 xx=int(OwnAsc[arr[i]])
-                                print("xx",xx)
                                 break
                                 #print("xx = ", xx)
                             elif(arr[i]=="\n"):
-                                print("arr[i] whith \\n",arr[i])
-                                print("xx Whith \\n",xx)
                                 addY+=1
                                 Broc=True
                                 break 
                         else:
-                            print("Else")
                             xx=int(arr[i])
-
-                        print(type(arr[i]), arr[i])
                         if(Broc==False):
                             try:
-                                print("ran")
-                                print("x is", xx, "y is",y+addY)
                                 img1.putpixel((xx,y+addY), (r,g,b,0) )
                                 n+=1
                             except Exception as err:
-                                print("ERR",err)
+                                print(Fore.RED+"ERR",err)
                         Broc=False
                         #print(img.getpixel((int(arr[i]),y)))
                         #print("arr spit ", arr[i])
@@ -615,7 +581,7 @@ def Encode(OwnAsc):
                    
                     #print(msgAsci)
                     i+=1
-                    input()
+    input("Press enter to return to Menu")
 
     #save the img
     img1.save("Encoded Image/Encoded Image.png")

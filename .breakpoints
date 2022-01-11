@@ -1,17 +1,19 @@
 {
   "files": {
+    "MeassageResived.txt": [
+      {
+        "id": "033c3ee2-3c24-4ab9-9d99-a80a09171c98",
+        "line": 1,
+        "version": 397,
+        "index": 0
+      }
+    ],
     "main.py": [
       {
-        "id": "80aaec1c-0bc4-4006-bea4-9e8e1d2ee1be",
-        "line": 546,
-        "version": 38458,
-        "index": 14647
-      },
-      {
-        "id": "2c2f2bda-fd0e-4913-92b8-6f54563341c3",
-        "line": 645,
-        "version": 38458,
-        "index": 18320
+        "id": "dafa1b28-dd18-4ac6-857b-498f4d10471b",
+        "line": 266,
+        "version": 38748,
+        "index": 6022
       }
     ]
   }
