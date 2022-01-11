@@ -1,3 +1,4 @@
+import threading
 import os
 import sys
 from PIL import Image
@@ -8,6 +9,7 @@ from functools import lru_cache
 
 Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
 #Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN+"\n4.Return to Home",Style.RESET_ALL)
+Active = False
 
 def Slect(extra):
     print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Style.RESET_ALL)
@@ -18,6 +20,15 @@ def Slect(extra):
         print(Fore.GREEN+"%d.Return to Home" %(FinalI+5)+Style.RESET_ALL)
     except:
         print(Fore.GREEN+"4.Return to Home"+Style.RESET_ALL)
+
+def LoadingScreen():
+    global Active
+    Sym=["/","-", "\\", "|"]
+    while(Active==True):
+        for sym in Sym:
+            print("Loading %s" % sym)
+            sleep(0.25)
+            Clear()
 
 OwnAsc={
     "q": 10,
@@ -458,7 +469,7 @@ def Decode(OwnAsc):
 
 
 
-# ENDOING #
+# ENCODEING #
 
 
 
@@ -640,6 +651,10 @@ FirstPass=True
 
 #print(len("JrytK]'i3-)P{l*UwDL#NHnkQh5jg£~84d@BAE[c$Ye(.o=%>uI&TVR}C6Wz0v+m7F2:Ss/_qO9XM!1Z"))
 
+
+
+
+
 while True:
     if(FirstPass==False):
         print(Style.RESET_ALL+"chose one of the options",Fore.LIGHTBLUE_EX,"Image ENCODER ", Fore.RED , "\n1.Encode the Image",Fore.BLUE, "\n2.Decode the image", Fore.LIGHTGREEN_EX,"\n3.Genrate key",Fore.BLUE+Style.DIM,"\n4.Quit",Style.RESET_ALL)
@@ -663,23 +678,11 @@ while True:
     elif(inp==2):
         Clear()
         Decode(OwnAsc)
-    elif(inp==3): 
-        print("Genrating Key \\")
-        sleep(0.25)
+    elif(inp==3):
         Clear()
-        print("Genrating Key /")
-        sleep(0.25)
-        Clear()
-        rand=randint(0,1)
-        if(rand==1):
-            print("Genrating Key --")
-            sleep(0.25)
-            Clear()
-            rand=randint(0,1)
-            if(rand==1):
-                print("Genrating Key |")
-                sleep(0.25)
-                Clear()
+        Active=True
+        lock = threading.Thread(target=LoadingScreen)
+        lock.start()
 
         # Generator #
         for y in range(100):
@@ -720,6 +723,9 @@ while True:
             for i in range(len(ListLock)):
                 file.write(ListLock[i])
             file.close()
+        Active=False
+        sleep(0.5)
+        input("Press enter to return to menu")
     elif(inp==4):
         quit()
     else:
