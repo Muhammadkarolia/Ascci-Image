@@ -7,7 +7,7 @@ from time import sleep
 from random import randint
 from functools import lru_cache
 
-Clear=lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
+Clear = lambda: os.system("clear" if os.name=="nt" "cls" else "clear")
 #Slect = lambda: print(Style.RESET_ALL+"Slect from the files:\n"+Fore.RED+"1.AppFiles\n2.DragTheImageToDecodeHear\n3.Encoded Image",Fore.GREEN+"\n4.Return to Home",Style.RESET_ALL)
 Active = False
 
@@ -200,7 +200,13 @@ def FileSlect(fileTopen, path, extra):
     while True:
         try:
             FileSlected=int(input(Fore.MAGENTA))
-            break
+            #print(fileTopen)
+            if(len(os.listdir(fileTopen))+1<FileSlected or FileSlected<0):
+                #print("yes")
+                print(Fore.RED)
+                sys.stdout.write("Please entre a valid number:")
+            else:
+                break
         except Exception as err: 
             if(str(err)[0:len("invalid literal for int() with base 10:")]=="invalid literal for int() with base 10:"):
                 print(Fore.RED)
@@ -256,7 +262,6 @@ def Decode(OwnAsc):
     file=open("MeassageResived.txt", "w")
 
     file=open("AppFiles/key.txt", "r") # opning the file #
-    arr=[] # declaring array to house the items in file
 
     # Itrates trough each item in file
     LinesInFile=[]
@@ -266,7 +271,6 @@ def Decode(OwnAsc):
 
     # goes through the string charter by charter and adds it to the arry
     #for i in range(0,len(LinesInFile)):
-    arr=LinesInFile
 
     file.close()
 
@@ -391,7 +395,8 @@ def Decode(OwnAsc):
             r,g,b,a=RGBvalDA.getpixel((x,y))
             if(a==0):
                 ranage+=1
-
+    print(ranage)
+    input()
 
     RGBvalD=imgDecode.convert("RGB") #  convert to RGB
 
@@ -405,15 +410,19 @@ def Decode(OwnAsc):
     index=0
     isn=False
     while(i!=ranage):
+        print(i)
+        input()
         for keys in OwnAsc:
-            if(arr[index] in OwnAsc.keys()): # needs a specfix index not i
-                xx=OwnAsc[arr[index]]
+            if(LinesInFile[index] in OwnAsc.keys()): # needs a specfix index not i
+                xx=OwnAsc[LinesInFile[index]]
                 isn=False
                 break
-            elif(arr[index]=="\n"):
+            elif(LinesInFile[index]=="\n"):
                 y+=1
                 isn=True
+                print("broken")
                 break
+                
         if(isn==False):
             r,g,b = RGBvalD.getpixel((xx,y))
             chrR=chr(r)
@@ -422,7 +431,10 @@ def Decode(OwnAsc):
             msg.append(chrR)
             msg.append(chrG)
             msg.append(chrB)
+            print(msg)
+            input()
             i+=1
+            print("i+=1")
         index+=1
 
 
@@ -448,7 +460,7 @@ def Decode(OwnAsc):
     file.close()
     print("This msg is stored in the messages folder, in the MeassageResivedfile.",Style.RESET_ALL)
     input("Press any key to countiue\t")
-    print(Style.RESET_ALL,"Returning to menu")
+    print(Style.RESET_ALL+"Returning to menu")
     IdontKnowWhatToCallThisVar=randint(0,1)
     if(IdontKnowWhatToCallThisVar==0):
         sleep(0.5)
@@ -510,7 +522,7 @@ def Encode(OwnAsc):
 
 
     # THIS NEEDS WORKING ON #
-    # It takes the thing and makes the thing that goes through the if statment
+    # It takes the mod and div of the len(msg) and makes the thing that goes through the if statment
     F=len(msg)//3
     M=len(msg)%3
 
@@ -526,21 +538,30 @@ def Encode(OwnAsc):
         Clear()
         return
     
-    l+=1
+    print("MSGAscii", msgAsci)
+
+    #l+=1
     i=0
     addY=0
     Broc=False
     for y in range(hight):
             for x in range(width):
+                Broc=False
                 if(n!=l):
                     #print("n ",n)
                     #print("i ",i)#
                     try:
                         r=msgAsci[3*n]
-                        g=msgAsci[(3*n)+1]
-                        b=msgAsci[(3*n)+2]
+                        try:
+                            g=msgAsci[(3*n)+1]
+                            try:
+                                b=msgAsci[(3*n)+2]
+                            except:
+                                b=0
+                        except:
+                            g=0
                     except:
-                        break
+                        r=0
                     if(y==hight and x==width):
                         print("MSG can not be fittied in this img")
 
@@ -561,11 +582,13 @@ def Encode(OwnAsc):
                             xx=int(arr[i])
                         if(Broc==False):
                             try:
+                                print(r,g,b,"rgb")
+                                input()
                                 img1.putpixel((xx,y+addY), (r,g,b,0) )
                                 n+=1
                             except Exception as err:
-                                print(Fore.RED+"ERR",err)
-                        Broc=False
+                                print(Fore.RED+"ERR",err,Style.RESET_ALL)
+                                input("press enter to contiue")
                         #print(img.getpixel((int(arr[i]),y)))
                         #print("arr spit ", arr[i])
 
@@ -690,8 +713,9 @@ while True:
                 file.write(ListLock[i])
             file.close()
         Active=False
-        sleep(0.5)
+        sleep(1.5)
         input("Press enter to return to menu")
+        Clear()
     elif(inp==4):
         quit()
     else:
