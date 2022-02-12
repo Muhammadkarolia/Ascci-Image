@@ -278,8 +278,8 @@ def Decode(OwnAsc):
 
     file.close()
 
-    extra = []
-    FileInBase = os.listdir()
+    extra = [] # the amount of extra files in the base
+    FileInBase = os.listdir() # All the files
     for i in range(len(FileInBase)):
         if(os.path.isfile(FileInBase[i]) == True):
             f, ext = os.path.splitext(FileInBase[i])
@@ -439,10 +439,13 @@ def Decode(OwnAsc):
 
     file = open("MeassageResived.txt", "w")
     #write the msg to file
-    for i in range(len(msg)):
-        #print(i)
-        file.write(msg[i])
-        if(i == len(msg)):
+    for i in range(len(msg)): # Leave as for i in range
+        # Dont change to for item in msg
+        if(msg[i]==chr(0)):
+            continue
+        else:
+            file.write(msg[i])
+        if(i == len(msg)): # Becouase of this line
             file.close()
             file = open("MeassageResived.txt", "r")
             break
@@ -496,9 +499,6 @@ def Encode(OwnAsc):
     for i in range(0,len(LinesInFile)):
         arr.append(LinesInFile[i])
 
-    print("arr",arr)
-    print("lines ",LinesInFile)
-    input()
     file.close()
 
     x = 0 # x #
@@ -550,8 +550,11 @@ def Encode(OwnAsc):
                                 b = 0
                         except:
                             g = 0
+                            b = 0
                     except:
-                        r = 0
+                        n=l
+                        break
+                        
                     if(y == hight and x == width):
                         print("MSG can not be fittied in this img")
 
