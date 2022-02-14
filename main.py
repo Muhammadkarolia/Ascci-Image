@@ -365,7 +365,7 @@ def Decode(OwnAsc):
 
         elif(FileSlected == 3):
             Clear()
-            path=str()
+            path = str()
             if(len(os.listdir("Encoded Image")) == 0):
                 print(Fore.LIGHTBLUE_EX+"Encoded Image/"+Style.RESET_ALL)
                 print("There is noething in this file")
@@ -376,9 +376,9 @@ def Decode(OwnAsc):
 
             else:
                 
-                path=FileSlect("Encoded Image", path, extra)
+                path = FileSlect("Encoded Image", path, extra)
                 if(path!="BaseFile"):
-                    imgDecode=Image.open(path) 
+                    imgDecode = Image.open(path) 
                     break
 
         elif(FileSlected>upperBound or FileSlected<1):
@@ -392,8 +392,27 @@ def Decode(OwnAsc):
             return
         elif(FileSlected<=upperBound and FileSlected>3):
             #print("ran")
-            imgDecode = Image.open(extra[FileSlected-4])
-            break
+            if(os.path.isfile(extra[FileSlected-4]) == True):
+                imgDecode = Image.open(extra[FileSlected-4])
+                break
+                
+            elif(os.path.isdir(extra[FileSlected-4]) == True):
+                
+                Clear()
+                path = str()
+                if(len(os.listdir(extra[FileSlected-4])) == 0):
+                    print(Fore.LIGHTBLUE_EX+extra[FileSlected-4]+"/"+Style.RESET_ALL)
+                    print("There is noething in this file")
+                    input("Press any key to countiue")
+                    Clear()
+                    Slect(extra)
+                    sys.stdout.write("Write the number before the file you want to slect: ")
+
+                else:
+                    path = FileSlect(extra[FileSlected-4], path, extra)
+                    if(path!=extra[FileSlected-4]):
+                        imgDecode = Image.open(path) 
+                        break
 
     # Finding the ammount of pixels in the image which have a Alpah value of 0
     # This is becouase them pixels have leters enocded in them
