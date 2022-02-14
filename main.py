@@ -286,6 +286,13 @@ def Decode(OwnAsc):
             if(ext == ".png"):
                 extra.append(FileInBase[i])
 
+        elif(os.path.isdir(FileInBase[i]) == True):
+            f, ext = os.path.splitext(FileInBase[i])
+            if(f == "AppFiles" or f == "DragTheImageToDecodeHear" or f == "Encoded Image" or f == ".upm" or f == ".git"):
+                continue
+            else:
+                extra.append(FileInBase[i])
+
 
     #Welcome to the decoding side. 
     print(Fore.MAGENTA+"Welcome to the decoding side of this application.\n"+Fore.LIGHTBLUE_EX+"NAVAGATE "+Style.RESET_ALL +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
