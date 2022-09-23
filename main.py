@@ -24,7 +24,6 @@ Active = False # This is for the loading screen
 # Used in: "LoadingScreen" and "inp == 3"
 
 def Slect(InBase): # InBase is the files that are added by the user
-
     # Goes thorugh the base files and sees if the 
     for i in range(len(InBase)):
         if(os.path.isfile(InBase[i])):
@@ -33,7 +32,7 @@ def Slect(InBase): # InBase is the files that are added by the user
              print(Red+str(i+1)+".%s" %(InBase[i]))
         FinalI = i # So that we know what the last pass was.
 
-    print(Green+"%d.Return to Home" %(FinalI+2)+Reset) # Will retren err if FinalI no exit
+    print(Green+"%d.Return" %(FinalI+2)+Reset) # Will retren err if FinalI no exit
     # This will happen when there is no InBase files
 
 # loding screen.
@@ -80,7 +79,6 @@ OwnAsc={
     "n": 35,
     "*": 46,
     ",": 37,
-    ".": 38,
     "/": 39,
 
     "4": 1,
@@ -114,9 +112,8 @@ OwnAsc={
     "_": 50,
     "~": 57,
     "5": 8,
-
     "?": 60,
-    "[": 61,
+
     "]": 62,
     "a": 63,
     "Y": 70,
@@ -124,30 +121,32 @@ OwnAsc={
     "s": 64,
     "E": 67,
     "R": 68,
-
+    "[": 61,
     "T": 69,
+
     "U": 71,
     "I": 72,
-    "O": 73,
-    "P": 74,
-    "A": 75,
     "S": 76,
+    "P": 74,
+    "O": 73,
+    "H": 80,
     "D": 77,
     "F": 78,
     "G": 79,
 
-    "H": 80,
     "Z": 84,
+    "B": 88,
     "K": 82,
     "L": 83,
-    "@": 56,
-    "M": 90,
+    "A": 75,
     "N": 89,
+    "M": 90,
+    "@": 56,
+    ".": 38,
     "C": 86,
-    "V": 87,
-    "B": 88,
-    "J": 81,
 
+    "V": 87,
+    "J": 81,
     "X": 85,
 }
 
@@ -176,95 +175,83 @@ def Read(path):
         WhatRemove.append(i) # Takes the indexs of the itesm to be remvoed
 
     for i in range(len(WhatRemove)):
-        listt[WhatRemove[i]] = ":lfeTestinghi123hi321klo559lkobu@;./<ia" # Reaplces them items. Do not change
+        listt[WhatRemove[i]] = "PleaseDontNameAfileThisString" # Reaplces them items. Do not change
 
     for i in range(len(listt)):
         try:
-            listt.remove(":lfeTestinghi123hi321klo559lkobu@;./<ia")
+            listt.remove("PleaseDontNameAfileThisString")
         except:
             break
     
     paf = ""
     for i in range(len(listt)):
         paf = paf+listt[i] #append the listt items to a string
-
+    
     return paf
 
 
-
-def FileSlect(fileTopen, path, InBase): # pramters can be traced easly 
-    path = fileTopen+"/"
-    print(LightBlue+path)
-    path = str()
-    FilesInslected = os.listdir(fileTopen)
-
-
-    for i in range(len(FilesInslected)):
-        if(os.path.isfile(fileTopen+"/"+FilesInslected[i]) == True): # if the folder is a file 
-            print(Yellow+str(i+1)+"."+FilesInslected[i]+Reset) # use yellow colour
-
-        elif(os.path.isdir(fileTopen+"/"+FilesInslected[i]) == True): # else use red colour
-            print(Red+str(i+1)+"."+FilesInslected[i]+Reset)
-        iii = i # Take the last itration of i 
-
-    print(Reset+str(iii+2)+".Go back")
-    sys.stdout.write("Write the number of the option --> ")
+def FileSlect(fileTopen, path, InBase): 
+    # fileTopen is the File that is needing to be oppened
+    # path is the endnding path
+    # InBase is all the files in the base 
+    Clear()
+    ConFTO = os.listdir(fileTopen) #Stotores all files in list
+    lenFTO = len(ConFTO)
+    print(LightBlue+fileTopen+"/")
     
-    # Self explantory
+    if(lenFTO == 0):
+        return "Empty"
+    
+    for i in range(lenFTO):
+        if(os.path.isfile(fileTopen+"/"+ConFTO[i])):
+            print(Yellow+str(i+1)+"."+ConFTO[i]+Reset)
+        else:
+            print(Red+str(i+1)+"."+ConFTO[i]+Reset)
+    
+    
+    print(Green+"%d.Return" %(lenFTO+1)+Reset)
+    sys.stdout.write("Please entere the number of the file you to select: ")
     while True:
-        try:
-            FileSlected = int(input(Magenta))
-            if(len(os.listdir(fileTopen))+1<FileSlected or FileSlected<0):
-                print(Red)
-                sys.stdout.write("Please entre a valid number:")
-            else:
+        while True:
+            try:
+                FileSlected = int(input(Magenta))
+                if(FileSlected <= 0 or FileSlected > lenFTO+1):
+                    int("f")
                 break
 
-        except Exception as err: 
-            if(str(err)[0:len("invalid literal for int() with base 10:")] == "invalid literal for int() with base 10:"):
-                print(Red)
-                sys.stdout.write("Please entre a number:")
+            except Exception as err:
+                if(str(err)[0:len("invalid literal for int() with base 10:")] == "invalid literal for int() with base 10:"):
+                    sys.stdout.write("Please enter a vaild input: ")
+        FileSlected-=1
 
-    # Needs to be +2(the iii)
-    if(FileSlected == iii+2): # if you dont understand then... what the hell, you are stupid
 
-        path = Read(fileTopen) # Rollbacks the file
-        if(path == "BaseFile"): # If at base file then:
-            Clear()
-            Slect(InBase) # Shows base slection screen.
-            sys.stdout.write("Write the number of your option --> ")
-            path = "BaseFile" # At base files
-            return path # if At Base file then 
-            
-    elif(FileSlected<iii+3 or FileSlected>1): # Agin this is self explantory
-        FileSel = FilesInslected[FileSlected-1]
-        path = fileTopen+"/"+FileSel    
 
-    if(os.path.isdir(path)):
-        if(len(os.listdir(path)) == 0):
-            Clear()
-            print(Reset+"This folder is empty")
-            path = fileTopen
-            FileSlect(path,path, InBase)
-            return path
-            
-
-        elif(len(os.listdir(path))>0):
-            Clear()
-            path = FileSlect(path, path, InBase)
-            return path
-
-    elif(os.path.isfile(path)):
-        name, ext = os.path.splitext(path) # Splits the last item in the path to its name and ext
-        if(ext!=".png"):
-            print(Reset+"This is not a png file")
-            input("press any key to continue")
-            path = Read(path) # Remove the last item
-            Clear()
+        if(FileSlected == lenFTO):
+            fileTopen = Read(fileTopen)
+            print(fileTopen)
+            path = ""
+            print(fileTopen)
+            if(fileTopen == "BaseFile"):
+                Clear()
+                Slect(InBase)
+                sys.stdout.write("Slect file you want to open: ")
+                return "BaseFile"
             FileSlect(fileTopen, path, InBase)
-            return path
+        path = fileTopen + "/" + ConFTO[FileSlected]
+
+        if(os.path.isdir(path)):
+            ConSF = os.listdir(path)
+            if(len(ConSF) == 0):
+                return "Empty"
+            FileSlect(path, path, InBase)
         else:
-            return path 
+            f, ext = os.path.splitext(path)
+            if(ext == ".png"):
+                return path
+            else:
+                print(Red+"The file slected is not a PNG file"+Reset)
+                sys.stdout.write("Please entere the number of the file you to select: ")
+
 
 
 
@@ -287,12 +274,12 @@ def Decode(OwnAsc):
     InBase = [] # the amount of InBase files in the base
     FileInBase = os.listdir() # All the files
     for i in range(len(FileInBase)):
-        if(os.path.isfile(FileInBase[i]) == True):
+        if(os.path.isfile(FileInBase[i])):
             f, ext = os.path.splitext(FileInBase[i])
             if(ext == ".png"):
                 InBase.append(FileInBase[i])
 
-        elif(os.path.isdir(FileInBase[i]) == True):
+        elif(os.path.isdir(FileInBase[i])):
             f, ext = os.path.splitext(FileInBase[i])
             if(f == ".upm" or f == ".git"):
                 continue
@@ -303,18 +290,17 @@ def Decode(OwnAsc):
     #Welcome to the decoding side. 
     print(Magenta+"Welcome to the decoding side of this application.\n"+LightBlue+"NAVAGATE "+Reset +"the files to find the image you want to decode. A folder will apper red and and a non folder will be yellow")
     for i in range(len(InBase)):
-        if(os.path.isfile(InBase[i]) == True):
+        if(os.path.isfile(InBase[i])):
             print(Yellow+str(i+1)+".%s" %(InBase[i]))
         else:
             print(Red+str(i+1)+".%s" %(InBase[i]))
         FinalI = i
 
-    print(Green+"%d.Return to Home" %(FinalI+2)+Reset)
+    print(Green+"%d.Return" %(FinalI+2)+Reset)
 
 
 
     sys.stdout.write("Write the number before the file you want to slect: ")
-
     while True:
         while True:
             try:
@@ -332,8 +318,11 @@ def Decode(OwnAsc):
                     sys.stdout.write("Please entre a valid number: ")
         
 
-        if(FileSlected < len(InBase) and FileSlected >= 0):
-            if(os.path.exists(InBase[FileSlected])):
+        if(FileSlected <= len(InBase) and FileSlected >= 0):
+            if(FileSlected == len(InBase)):
+                Clear()
+                return
+            elif(os.path.exists(InBase[FileSlected])):
                 if(os.path.isfile(InBase[FileSlected])):
                     Name, Ext = os.path.splitext( InBase[FileSlected] )
                     if(Ext == ".png"):
@@ -348,8 +337,22 @@ def Decode(OwnAsc):
                     path = ""
                     path = FileSlect(InBase[FileSlected], path, InBase)
                     if(path != "BaseFile"):
-                        imgDecode = Image.open(path)
-                        break
+                        try:
+                            imgDecode = Image.open(path)
+                            break
+                        except Exception as e:
+                            if("No such file or directory:" in str(e)):
+                                print("The Folder you have selected is emety")
+                                sys.stdout.write("press enter to contiue")
+                                input()
+                                Clear()
+                                Slect(InBase)
+                                sys.stdout.write("Write the number before the file you want to slect: ")
+                                
+        else:
+            
+            print(Reset+"Please enter a valid number: ", end="")
+        
 
 
     # Finding the ammount of pixels in the image which have a Alpah value of 0
@@ -370,7 +373,6 @@ def Decode(OwnAsc):
     #n = 0
     msg = [] # this will open the array which will hold the measge
     
-
     y = 0
     i = 0
     index = 0
